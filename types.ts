@@ -24,6 +24,7 @@ export interface Classroom {
   id: string;
   name: string;
   grade: string;
+  classCode?: string;
 }
 
 export interface Student {

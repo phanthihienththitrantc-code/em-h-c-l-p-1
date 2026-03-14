@@ -1,0 +1,124 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the application (teacher or parent)",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["teacher", "parent"] }
+      },
+      "required": ["email", "role"]
+    },
+    "Classroom": {
+      "title": "Classroom",
+      "description": "A classroom created by a teacher",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "grade": { "type": "string" },
+        "teacherId": { "type": "string" }
+      },
+      "required": ["name", "grade", "teacherId"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "A student in a classroom",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "classId": { "type": "string" },
+        "avatarColor": { "type": "string" },
+        "teacherId": { "type": "string" }
+      },
+      "required": ["name", "classId", "teacherId"]
+    },
+    "Assignment": {
+      "title": "Assignment",
+      "description": "An assignment given to a class",
+      "type": "object",
+      "properties": {
+        "lessonId": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "teacherId": { "type": "string" }
+      },
+      "required": ["lessonId", "dueDate", "teacherId"]
+    },
+    "Lesson": {
+      "title": "Lesson",
+      "description": "A reading lesson",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "targetLetter": { "type": "string" },
+        "words": { "type": "array", "items": { "type": "string" } },
+        "sentences": { "type": "array", "items": { "type": "string" } },
+        "teacherId": { "type": "string" }
+      },
+      "required": ["title", "targetLetter", "words", "sentences", "teacherId"]
+    },
+    "WritingExercise": {
+      "title": "WritingExercise",
+      "description": "A writing exercise",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "targetLetter": { "type": "string" },
+        "guideImage": { "type": "string" },
+        "difficulty": { "type": "string", "enum": ["easy", "medium", "hard"] },
+        "teacherId": { "type": "string" }
+      },
+      "required": ["title", "targetLetter", "difficulty", "teacherId"]
+    },
+    "ProgressRecord": {
+      "title": "ProgressRecord",
+      "description": "A student's progress record",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "lessonId": { "type": "string" },
+        "score": { "type": "number" },
+        "completedAt": { "type": "string" },
+        "audioUrl": { "type": "string" },
+        "audioBase64": { "type": "string" },
+        "writingBase64": { "type": "string" },
+        "feedback": { "type": "string" },
+        "teacherId": { "type": "string" }
+      },
+      "required": ["studentId", "lessonId", "score", "completedAt", "teacherId"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "classrooms/{classroomId}": {
+      "schema": { "$ref": "#/entities/Classroom" },
+      "description": "Classrooms"
+    },
+    "students/{studentId}": {
+      "schema": { "$ref": "#/entities/Student" },
+      "description": "Students"
+    },
+    "assignments/{assignmentId}": {
+      "schema": { "$ref": "#/entities/Assignment" },
+      "description": "Assignments"
+    },
+    "lessons/{lessonId}": {
+      "schema": { "$ref": "#/entities/Lesson" },
+      "description": "Lessons"
+    },
+    "writing_exercises/{exerciseId}": {
+      "schema": { "$ref": "#/entities/WritingExercise" },
+      "description": "Writing exercises"
+    },
+    "progress/{progressId}": {
+      "schema": { "$ref": "#/entities/ProgressRecord" },
+      "description": "Progress records"
+    }
+  }
+}

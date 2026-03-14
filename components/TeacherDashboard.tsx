@@ -132,7 +132,8 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
     const newClass: Classroom = {
       id: 'c-' + Date.now(),
       name: newClassName,
-      grade: '1'
+      grade: '1',
+      classCode: Math.random().toString(36).substring(2, 8).toUpperCase()
     };
     const updatedClasses = [...classrooms, newClass];
     onSaveClassrooms(updatedClasses);
@@ -240,16 +241,23 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                   <div key={c.id} className="relative group">
                     <button
                       onClick={() => { setSelectedClassId(c.id); setSelectedStudentHistory(null); }}
-                      className={`w-full p-5 rounded-2xl font-black text-left transition-all border-b-4 flex items-center justify-between ${selectedClassId === c.id ? 'bg-indigo-600 text-white border-indigo-900 shadow-lg' : 'bg-gray-50 text-gray-500 border-gray-100 hover:bg-gray-100'}`}
+                      className={`w-full p-5 rounded-2xl font-black text-left transition-all border-b-4 flex flex-col justify-between ${selectedClassId === c.id ? 'bg-indigo-600 text-white border-indigo-900 shadow-lg' : 'bg-gray-50 text-gray-500 border-gray-100 hover:bg-gray-100'}`}
                     >
-                      <span className="truncate pr-8">{c.name}</span>
-                      <span className={`px-3 py-1 rounded-full text-[10px] shrink-0 ${selectedClassId === c.id ? 'bg-white/20' : 'bg-gray-200 text-gray-400'}`}>
-                        {students.filter(s => s.classId === c.id).length} HS
-                      </span>
+                      <div className="flex items-center justify-between w-full">
+                        <span className="truncate pr-8">{c.name}</span>
+                        <span className={`px-3 py-1 rounded-full text-[10px] shrink-0 ${selectedClassId === c.id ? 'bg-white/20' : 'bg-gray-200 text-gray-400'}`}>
+                          {students.filter(s => s.classId === c.id).length} HS
+                        </span>
+                      </div>
+                      {c.classCode && (
+                        <div className={`mt-2 text-xs font-bold ${selectedClassId === c.id ? 'text-indigo-200' : 'text-gray-400'}`}>
+                          Mã lớp: <span className="tracking-widest uppercase">{c.classCode}</span>
+                        </div>
+                      )}
                     </button>
                     <button 
                       onClick={(e) => { e.stopPropagation(); setShowDeleteClassConfirm(c.id); }}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-red-400 opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all"
+                      className="absolute right-3 top-4 p-2 text-red-400 opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all"
                     >
                       <Trash2 size={16} />
                     </button>

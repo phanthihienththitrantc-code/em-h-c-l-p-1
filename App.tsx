@@ -14,6 +14,8 @@ import { Settings, UserCheck, LogOut, User, Users, Headphones } from 'lucide-rea
 import { AudioService } from './services/audioService';
 
 import { api } from './services/api';
+import { auth, signInWithGoogle, logOut } from './firebase';
+import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 
 const STUDENT_NAMES_1A3 = [
   "Hà Tâm An", "Vũ Ngọc Khánh An", "Hoàng Diệu Anh", "Quàng Tuấn Anh", "Lê Bảo Châu",
@@ -45,87 +47,85 @@ const App: React.FC = () => {
   const [targetLessonId, setTargetLessonId] = useState<string | undefined>(undefined);
   const [currentTheme, setCurrentTheme] = useState<AppTheme>(APP_THEMES[0]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [
-          dbLessons,
-          dbProgress,
-          dbStudents,
-          dbClassrooms,
-          dbAssignments,
-          dbWritingExercises
-        ] = await Promise.all([
-          api.getLessons(),
-          api.getProgress(),
-          api.getStudents(),
-          api.getClassrooms(),
-          api.getAssignments(),
-          api.getWritingExercises()
-        ]);
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setIsLoading(false);
+      // We don't force login view here anymore, because students/parents don't need to be logged in via Google
+      // We just update the currentUser state.
+    });
+    return () => unsubscribeAuth();
+  }, []);
 
-        if (dbLessons.length > 0) {
-          setLessons(dbLessons);
-        } else {
-          setLessons(INITIAL_LESSONS);
-          INITIAL_LESSONS.forEach(l => api.saveLesson(l));
-        }
-
-        setProgress(dbProgress);
-        setAssignments(dbAssignments);
-
-        const { WRITING_EXERCISES } = await import('./constants');
-        if (dbWritingExercises.length > 0) {
-          setWritingExercises(dbWritingExercises);
-        } else {
-          setWritingExercises(WRITING_EXERCISES);
-          WRITING_EXERCISES.forEach(e => api.saveWritingExercise(e));
-        }
-
-        let currentClassrooms = [
-          { id: 'c1', name: 'Lớp 1A', grade: '1' },
-          { id: 'c2', name: 'Lớp 1B', grade: '1' },
-          { id: 'c3', name: 'Lớp 1A3', grade: '1' }
-        ];
-        if (dbClassrooms.length > 0) {
-          if (!dbClassrooms.some(c => c.id === 'c3')) {
-            currentClassrooms = [...dbClassrooms, { id: 'c3', name: 'Lớp 1A3', grade: '1' }];
-            api.saveClassroom({ id: 'c3', name: 'Lớp 1A3', grade: '1' });
-          } else {
-            currentClassrooms = dbClassrooms;
-          }
-        } else {
-          currentClassrooms.forEach(c => api.saveClassroom(c));
-        }
-        setClassrooms(currentClassrooms);
-
-        let currentStudents: Student[] = [];
-        if (dbStudents.length > 0) {
-          if (!dbStudents.some(s => s.classId === 'c3')) {
-            currentStudents = [...dbStudents, ...INITIAL_STUDENTS_1A3];
-            INITIAL_STUDENTS_1A3.forEach(s => api.saveStudent(s));
-          } else {
-            currentStudents = dbStudents;
-          }
-        } else {
-          currentStudents = INITIAL_STUDENTS_1A3;
-          currentStudents.forEach(s => api.saveStudent(s));
-        }
-        setStudents(currentStudents);
-
-        const savedThemeJson = localStorage.getItem('tv1_theme');
-        if (savedThemeJson) setCurrentTheme(JSON.parse(savedThemeJson));
-
-      } catch (error) {
-        console.error("Failed to load data from API", error);
-      } finally {
-        setIsLoading(false);
+  useEffect(() => {
+    // We always load data now, regardless of currentUser, because students/parents need data too.
+    // If we want to restrict, we can check userRole, but initially we need classrooms to show in LoginView.
+    
+    setIsLoading(true);
+    
+    const unsubLessons = api.subscribeLessons((data) => {
+      if (data.length === 0) {
+        setLessons(INITIAL_LESSONS);
+        INITIAL_LESSONS.forEach(l => api.saveLesson(l));
+      } else {
+        setLessons(data);
       }
+    });
+
+    const unsubProgress = api.subscribeProgress(setProgress);
+    const unsubAssignments = api.subscribeAssignments(setAssignments);
+    
+    const unsubWriting = api.subscribeWritingExercises(async (data) => {
+      if (data.length === 0) {
+        const { WRITING_EXERCISES } = await import('./constants');
+        setWritingExercises(WRITING_EXERCISES);
+        WRITING_EXERCISES.forEach(e => api.saveWritingExercise(e));
+      } else {
+        setWritingExercises(data);
+      }
+    });
+
+    const unsubClassrooms = api.subscribeClassrooms((data) => {
+      if (data.length === 0) {
+        const initialClasses = [
+          { id: 'c1', name: 'Lớp 1A', grade: '1', classCode: 'A1B2C3' },
+          { id: 'c2', name: 'Lớp 1B', grade: '1', classCode: 'D4E5F6' },
+          { id: 'c3', name: 'Lớp 1A3', grade: '1', classCode: 'G7H8I9' }
+        ];
+        setClassrooms(initialClasses);
+        initialClasses.forEach(c => api.saveClassroom(c));
+      } else {
+        setClassrooms(data);
+      }
+    });
+
+    const unsubStudents = api.subscribeStudents((data) => {
+      if (data.length === 0) {
+        setStudents(INITIAL_STUDENTS_1A3);
+        INITIAL_STUDENTS_1A3.forEach(s => api.saveStudent(s));
+      } else {
+        setStudents(data);
+      }
+    });
+
+    const savedThemeJson = localStorage.getItem('tv1_theme');
+    if (savedThemeJson) setCurrentTheme(JSON.parse(savedThemeJson));
+
+    setIsLoading(false);
+
+    return () => {
+      unsubLessons();
+      unsubProgress();
+      unsubAssignments();
+      unsubWriting();
+      unsubClassrooms();
+      unsubStudents();
     };
+  }, []);
 
-    loadData();
-
+  useEffect(() => {
     // Unlock audio for iOS on first interaction
     const unlockAudio = () => {
       AudioService.getInstance().unlock();
@@ -218,13 +218,24 @@ const App: React.FC = () => {
   };
 
   const handleSaveProgress = async (record: Omit<ProgressRecord, 'id' | 'timestamp'>) => {
+    // Find the teacherId from the classroom of the active student
+    let teacherId = auth.currentUser?.uid || 'anonymous';
+    if (activeStudent) {
+      const studentClass = classrooms.find(c => c.id === activeStudent.classId);
+      if (studentClass && (studentClass as any).teacherId) {
+        teacherId = (studentClass as any).teacherId;
+      }
+    }
+
     const newRecord: ProgressRecord = {
       ...record,
       id: Date.now().toString(),
       timestamp: Date.now(),
       studentId: activeStudent?.id,
-      studentName: activeStudent?.name
-    };
+      studentName: activeStudent?.name,
+      teacherId // Include the resolved teacherId
+    } as ProgressRecord & { teacherId: string };
+    
     const newProgress = [newRecord, ...progress];
     setProgress(newProgress);
     await api.saveProgress(newRecord);

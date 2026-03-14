@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isTeacherOwner() {
+      return isAuthenticated() && request.resource.data.teacherId == request.auth.uid;
+    }
+
+    function isTeacherOwnerUpdate() {
+      return isAuthenticated() && resource.data.teacherId == request.auth.uid && request.resource.data.teacherId == request.auth.uid;
+    }
+
+    function isTeacherOwnerDelete() {
+      return isAuthenticated() && resource.data.teacherId == request.auth.uid;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+    
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'role']);
+    }
+
+    match /classrooms/{classroomId} {
+      allow read: if true; // Allow students/parents to find their class by code
+      allow create: if isTeacherOwner();
+      allow update: if isTeacherOwnerUpdate();
+      allow delete: if isTeacherOwnerDelete();
+    }
+
+    match /students/{studentId} {
+      allow read: if true; // Allow students/parents to pick their name
+      allow create: if isTeacherOwner();
+      allow update: if isTeacherOwnerUpdate();
+      allow delete: if isTeacherOwnerDelete();
+    }
+
+    match /assignments/{assignmentId} {
+      allow read: if true; // Allow students/parents to see assignments
+      allow create: if isTeacherOwner();
+      allow update: if isTeacherOwnerUpdate();
+      allow delete: if isTeacherOwnerDelete();
+    }
+
+    match /lessons/{lessonId} {
+      allow read: if true; // Allow students/parents to read lessons
+      allow create: if isTeacherOwner();
+      allow update: if isTeacherOwnerUpdate();
+      allow delete: if isTeacherOwnerDelete();
+    }
+
+    match /writing_exercises/{exerciseId} {
+      allow read: if true; // Allow students/parents to read exercises
+      allow create: if isTeacherOwner();
+      allow update: if isTeacherOwnerUpdate();
+      allow delete: if isTeacherOwnerDelete();
+    }
+
+    match /progress/{progressId} {
+      allow read: if true; // Allow students/parents to see their progress
+      allow create: if true; // Allow students/parents to submit progress
+      allow update: if true; // Allow students/parents to update progress
+      allow delete: if isTeacherOwnerDelete();
+    }
+  }
+}
