@@ -129,11 +129,18 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
 
   const handleAddClass = () => {
     if (!newClassName.trim()) return;
+    
+    // Generate code from name: remove "Lớp", remove spaces, keep alphanumeric
+    const sanitizedName = newClassName.trim().toUpperCase()
+      .replace(/^LỚP\s+/i, '') // Remove "Lớp " prefix
+      .replace(/^LOP\s+/i, '')  // Remove "Lop " prefix
+      .replace(/[^A-Z0-9]/g, ''); // Keep only alphanumeric
+    
     const newClass: Classroom = {
       id: 'c-' + Date.now(),
       name: newClassName,
       grade: '1',
-      classCode: Math.random().toString(36).substring(2, 8).toUpperCase()
+      classCode: sanitizedName || Math.random().toString(36).substring(2, 5).toUpperCase()
     };
     const updatedClasses = [...classrooms, newClass];
     onSaveClassrooms(updatedClasses);

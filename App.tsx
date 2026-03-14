@@ -90,9 +90,9 @@ const App: React.FC = () => {
     const unsubClassrooms = api.subscribeClassrooms((data) => {
       if (data.length === 0) {
         const initialClasses = [
-          { id: 'c1', name: 'Lớp 1A', grade: '1', classCode: 'A1B2C3' },
-          { id: 'c2', name: 'Lớp 1B', grade: '1', classCode: 'D4E5F6' },
-          { id: 'c3', name: 'Lớp 1A3', grade: '1', classCode: 'G7H8I9' }
+          { id: 'c1', name: 'Lớp 1A', grade: '1', classCode: '1A' },
+          { id: 'c2', name: 'Lớp 1B', grade: '1', classCode: '1B' },
+          { id: 'c3', name: 'Lớp 1A3', grade: '1', classCode: '1A3' }
         ];
         setClassrooms(initialClasses);
         initialClasses.forEach(c => api.saveClassroom(c));
