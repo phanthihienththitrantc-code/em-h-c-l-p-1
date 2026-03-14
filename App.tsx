@@ -97,7 +97,20 @@ const App: React.FC = () => {
         setClassrooms(initialClasses);
         initialClasses.forEach(c => api.saveClassroom(c));
       } else {
-        setClassrooms(data);
+        // Ensure all existing classes have a code
+        const processedData = data.map(c => {
+          if (!c.classCode) {
+            const code = c.name.trim().toUpperCase()
+              .replace(/^LỚP\s+/i, '')
+              .replace(/^LOP\s+/i, '')
+              .replace(/[^A-Z0-9]/g, '');
+            const updatedClass = { ...c, classCode: code || Math.random().toString(36).substring(2, 5).toUpperCase() };
+            api.saveClassroom(updatedClass);
+            return updatedClass;
+          }
+          return c;
+        });
+        setClassrooms(processedData);
       }
     });
 
