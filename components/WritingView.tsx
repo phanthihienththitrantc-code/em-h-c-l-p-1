@@ -168,6 +168,22 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
     ));
   };
 
+  const [showDots, setShowDots] = useState(false);
+
+  const onSaveExerciseWithConversion = (exercise: WritingExercise) => {
+    let url = exercise.videoUrl || '';
+    if (url.includes('watch?v=')) {
+      url = url.replace('watch?v=', 'embed/');
+      const ampersandIndex = url.indexOf('&');
+      if (ampersandIndex !== -1) {
+        url = url.substring(0, ampersandIndex);
+      }
+    } else if (url.includes('youtu.be/')) {
+      url = url.replace('youtu.be/', 'www.youtube.com/embed/');
+    }
+    onSaveExercise({ ...exercise, videoUrl: url });
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500 relative pb-24">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -252,33 +268,51 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
                   {showVideo ? (
                     <div className="w-full h-full rounded-3xl overflow-hidden border-4 border-white shadow-xl bg-slate-900 animate-in zoom-in duration-300 relative">
                        {selectedExercise.videoUrl ? (
-                         <iframe 
-                           src={`${selectedExercise.videoUrl}?autoplay=1`}
-                           className="w-full h-full" 
-                           title="Video mẫu viết"
-                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                           allowFullScreen
-                         ></iframe>
+                         <>
+                           <iframe 
+                             src={`${selectedExercise.videoUrl}`}
+                             className="w-full h-full" 
+                             title="Video mẫu viết"
+                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                             allowFullScreen
+                           ></iframe>
+                           <div className="absolute bottom-3 right-3 flex gap-2 z-20">
+                             <a 
+                               href={selectedExercise.videoUrl.replace('embed/', 'watch?v=')} 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold rounded-lg shadow-lg flex items-center gap-1 transition-colors"
+                             >
+                               <PlayCircle size={12} /> Mở YouTube
+                             </a>
+                           </div>
+                         </>
                        ) : (
                          <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 gap-4 text-slate-400">
-                            <VideoOff size={48} className="opacity-40" />
-                            <p className="text-xs font-black uppercase tracking-widest leading-relaxed">Cô đang chuẩn bị video hướng dẫn cho chữ này, bé chờ nhé!</p>
+                            <Film size={48} className="opacity-40" />
+                            <p className="text-xs font-black uppercase tracking-widest leading-relaxed">Bé nhấn nút dưới đây để tìm video hướng dẫn trên YouTube nhé!</p>
+                            <a 
+                              href={`https://www.youtube.com/results?search_query=hướng+dẫn+viết+chữ+${selectedExercise.text}+lớp+1`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-red-900/20 flex items-center gap-2"
+                            >
+                              <PlayCircle size={18} /> Tìm trên YouTube
+                            </a>
                             <button onClick={() => setShowVideo(false)} className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-[10px] font-bold text-white transition-colors">Quay lại mẫu chữ</button>
                          </div>
                        )}
-                       {selectedExercise.videoUrl && (
-                         <button 
-                           onClick={() => setShowVideo(false)}
-                           className="absolute top-3 right-3 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-colors z-20"
-                           title="Đóng video"
-                         >
-                           <X size={16} />
-                         </button>
-                       )}
+                       <button 
+                         onClick={() => setShowVideo(false)}
+                         className="absolute top-3 right-3 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-colors z-20"
+                         title="Đóng video"
+                       >
+                         <X size={16} />
+                       </button>
                     </div>
                   ) : (
                     <div className="w-full h-full bg-white writing-grid border-4 border-slate-100 rounded-3xl flex items-center justify-center relative shadow-inner overflow-hidden">
-                      <span className="text-[140px] font-handwriting text-slate-800 opacity-90 select-none animate-in fade-in duration-500 lowercase">
+                      <span className={`text-[140px] font-handwriting text-slate-800 opacity-90 select-none animate-in fade-in duration-500 lowercase ${showDots ? 'tracking-[0.2em] [text-shadow:2px_2px_0_#fff,-2px_-2px_0_#fff,2px_-2px_0_#fff,-2px_2px_0_#fff]' : ''}`} style={showDots ? { WebkitTextStroke: '1px #cbd5e1', color: 'transparent' } : {}}>
                         {selectedExercise.text}
                       </span>
                       <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/5 transition-colors pointer-events-none"></div>
@@ -319,19 +353,19 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
                            />
                          </div>
                          <div>
-                           <label className="block text-xs font-bold text-gray-500 mb-1">Link Video (YouTube Embed URL)</label>
+                           <label className="block text-xs font-bold text-gray-500 mb-1">Link Video (YouTube URL)</label>
                            <input 
                              type="text" 
                              value={editForm?.videoUrl || ''} 
                              onChange={e => setEditForm(prev => prev ? {...prev, videoUrl: e.target.value} : null)}
                              className="w-full px-3 py-2 border rounded-xl text-sm"
-                             placeholder="VD: https://www.youtube.com/embed/..."
+                             placeholder="Dán link YouTube vào đây"
                            />
                          </div>
                          <div className="flex gap-2 pt-2">
                            <button 
                              onClick={() => {
-                               if (editForm) onSaveExercise(editForm);
+                               if (editForm) onSaveExerciseWithConversion(editForm);
                                setIsEditing(false);
                              }}
                              className="flex-1 py-2 bg-green-500 text-white rounded-xl font-bold flex items-center justify-center gap-2"
@@ -375,13 +409,22 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
                        <div className="flex items-center gap-2 text-orange-600 bg-orange-50 px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-wider border border-orange-100">
                           <Info size={14} /> Cao 2 ô ly
                        </div>
-                       <button 
-                         onClick={() => setShowGhost(!showGhost)} 
-                         className={`flex items-center gap-2 px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-wider transition-all border ${showGhost ? 'bg-blue-600 text-white border-blue-700 shadow-md' : 'bg-gray-100 text-gray-400 border-gray-200'}`}
-                       >
-                         {showGhost ? <Eye size={14} /> : <VideoOff size={14} />} 
-                         {showGhost ? 'Đã bật nét mờ' : 'Đã tắt nét mờ'}
-                       </button>
+                       <div className="flex gap-2">
+                        <button 
+                          onClick={() => setShowGhost(!showGhost)} 
+                          className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-wider transition-all border ${showGhost ? 'bg-blue-600 text-white border-blue-700 shadow-md' : 'bg-gray-100 text-gray-400 border-gray-200'}`}
+                        >
+                          {showGhost ? <Eye size={14} /> : <VideoOff size={14} />} 
+                          {showGhost ? 'Nét mờ' : 'Tắt mờ'}
+                        </button>
+                        <button 
+                          onClick={() => setShowDots(!showDots)} 
+                          className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-wider transition-all border ${showDots ? 'bg-purple-600 text-white border-purple-700 shadow-md' : 'bg-gray-100 text-gray-400 border-gray-200'}`}
+                        >
+                          <Edit2 size={14} /> 
+                          {showDots ? 'Chữ rỗng' : 'Chữ đặc'}
+                        </button>
+                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-4 bg-indigo-50 rounded-2xl border border-indigo-100">
@@ -397,7 +440,7 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
             <div className="relative border-4 border-slate-200 rounded-[2rem] overflow-hidden aspect-[16/9] md:aspect-[2/1] bg-white writing-grid cursor-crosshair shadow-inner">
               {showGhost && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-                  <span className="text-[140px] md:text-[240px] font-handwriting text-slate-100 tracking-tighter transition-all duration-300 transform scale-110 italic lowercase">
+                  <span className={`text-[140px] md:text-[240px] font-handwriting text-slate-100 tracking-tighter transition-all duration-300 transform scale-110 italic lowercase ${showDots ? '[text-shadow:2px_2px_0_#fff,-2px_-2px_0_#fff,2px_-2px_0_#fff,-2px_2px_0_#fff]' : ''}`} style={showDots ? { WebkitTextStroke: '1px #e2e8f0', color: 'transparent' } : {}}>
                     {selectedExercise.text}
                   </span>
                 </div>
