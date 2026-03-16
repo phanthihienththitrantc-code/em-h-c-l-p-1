@@ -23,6 +23,9 @@ const LoginView: React.FC<LoginViewProps> = ({ students, classrooms, onSelectStu
     : students;
 
   const handleTeacherLogin = async () => {
+    // For now, allow teachers to access without Google auth to simplify
+    onSelectTeacher();
+    /*
     if (auth.currentUser) {
       onSelectTeacher();
     } else {
@@ -33,6 +36,7 @@ const LoginView: React.FC<LoginViewProps> = ({ students, classrooms, onSelectStu
         console.error("Login failed", error);
       }
     }
+    */
   };
 
   const handleCodeSubmit = (e: React.FormEvent) => {

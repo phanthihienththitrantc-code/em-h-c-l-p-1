@@ -244,7 +244,12 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><GraduationCap size={20} className="text-indigo-600" /> Quản lý Lớp Học</h3>
 
               <div className="space-y-3">
-                {classrooms.map(c => (
+                {classrooms.length === 0 ? (
+                  <div className="py-12 text-center text-gray-300 italic border-4 border-dashed border-gray-100 rounded-[2rem] flex flex-col items-center gap-4">
+                    <GraduationCap size={32} className="opacity-20" />
+                    <p>Chưa có lớp học nào. Thầy cô hãy nhấn "Thêm Lớp" nhé!</p>
+                  </div>
+                ) : classrooms.map(c => (
                   <div key={c.id} className="relative group">
                     <button
                       onClick={() => { setSelectedClassId(c.id); setSelectedStudentHistory(null); }}
@@ -283,7 +288,22 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 </h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {classStudents.map(student => (
+                  {classrooms.length === 0 ? (
+                    <div className="col-span-full py-20 text-center text-gray-300 italic border-4 border-dashed border-gray-100 rounded-[3rem] flex flex-col items-center gap-4">
+                      <GraduationCap size={48} className="opacity-20" />
+                      <p>Thầy cô hãy thêm lớp học trước khi thêm học sinh nhé!</p>
+                    </div>
+                  ) : !selectedClassId ? (
+                    <div className="col-span-full py-20 text-center text-gray-300 italic border-4 border-dashed border-gray-100 rounded-[3rem] flex flex-col items-center gap-4">
+                      <Users size={48} className="opacity-20" />
+                      <p>Hãy chọn một lớp học để xem danh sách học sinh.</p>
+                    </div>
+                  ) : classStudents.length === 0 ? (
+                    <div className="col-span-full py-20 text-center text-gray-300 italic border-4 border-dashed border-gray-100 rounded-[3rem] flex flex-col items-center gap-4">
+                      <Users size={48} className="opacity-20" />
+                      <p>Lớp học trống. Thầy cô hãy nhấn "Thêm Học Sinh" nhé!</p>
+                    </div>
+                  ) : classStudents.map(student => (
                     <div key={student.id} className="p-4 bg-gray-50 rounded-2xl flex items-center justify-between group hover:bg-white hover:shadow-md border border-transparent hover:border-indigo-100 transition-all cursor-pointer" onClick={() => setSelectedStudentHistory(student)}>
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-black shadow-sm" style={{ backgroundColor: student.avatarColor }}>
@@ -304,12 +324,6 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                       </button>
                     </div>
                   ))}
-                  {selectedClassId && classStudents.length === 0 && (
-                    <div className="col-span-full py-20 text-center text-gray-300 italic border-4 border-dashed border-gray-100 rounded-[3rem] flex flex-col items-center gap-4">
-                       <Users size={48} className="opacity-20" />
-                       <p>Lớp học trống. Thầy cô hãy nhấn "Thêm Học Sinh" nhé!</p>
-                    </div>
-                  )}
                 </div>
              </section>
            ) : (
