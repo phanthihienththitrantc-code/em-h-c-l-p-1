@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Lesson, Exercise } from '../types';
 import { LESSONS as SGK_LESSONS } from '../constants';
-import { X, Save, Plus, Trash2, RotateCcw, Copy, BookOpen, Edit3, ArrowRight, Sparkles, Mic, FileText } from 'lucide-react';
+import { X, Save, Plus, Trash2, RotateCcw, Copy, BookOpen, Edit3, ArrowRight, Sparkles, Mic, FileText, AlignLeft, AlignCenter, AlignRight, Link, Video } from 'lucide-react';
 import AudioRecorder from './AudioRecorder';
 
 interface LessonEditorProps {
@@ -15,6 +15,11 @@ interface LessonEditorProps {
 const LessonEditor: React.FC<LessonEditorProps> = ({ lesson, onSave, onCancel, onReset }) => {
   const [editedLesson, setEditedLesson] = useState<Lesson>({ ...lesson });
   const [activeTab, setActiveTab] = useState<'content' | 'audio'>('content');
+  const [textAlignments, setTextAlignments] = useState<{[key: string]: 'left' | 'center' | 'right'}>({
+    sentences: editedLesson.textAlignment?.sentences || 'left',
+    paragraphs: editedLesson.textAlignment?.paragraphs || 'left'
+  });
+  const [videoLink, setVideoLink] = useState(editedLesson.videoLink || '');
   
   // Lấy dữ liệu gốc từ hằng số để làm tham chiếu
   const originalSgkLesson = SGK_LESSONS.find(l => l.id === lesson.id);
@@ -93,10 +98,42 @@ const LessonEditor: React.FC<LessonEditorProps> = ({ lesson, onSave, onCancel, o
   };
 
   // Fix: Corrected type signature for field to ensure it is treated as a string when calling handleUpdateContent
-  const copyFromSgk = (field: keyof typeof lesson.content) => {
-    if (originalSgkLesson && originalSgkLesson.content[field]) {
-      // Cast field to string to satisfy handleUpdateContent's requirement for a string parameter
-      handleUpdateContent(field as string, originalSgkLesson.content[field] as string[]);
+  const handleUpdateAlignment = (field: string, alignment: 'left' | 'center' | 'right') => {
+    setTextAlignments(prev => ({ ...prev, [field]: alignment }));
+    setEditedLesson(prev => ({
+      ...prev,
+      textAlignment: {
+        ...prev.textAlignment,
+        [field]: alignment
+      }
+    }));
+  };
+
+  const handleUpdateVideoLink = (link: string) => {
+    setVideoLink(link);
+    setEditedLesson({
+      ...editedLesson,
+      videoLink: link
+    });
+  };
+
+  const handleCopyText = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      // Có thể thêm toast notification ở đây
+      console.log('Đã sao chép vào clipboard');
+    });
+  };
+
+  const handlePasteText = async (field: string) => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (field === 'sentences') {
+        handleUpdateContent('sentences', text.split('\n').filter(s => s.trim()));
+      } else if (field === 'paragraphs') {
+        handleUpdateContent('paragraphs', text.split('\n').filter(s => s.trim()));
+      }
+    } catch (err) {
+      console.error('Không thể dán từ clipboard:', err);
     }
   };
 
@@ -274,14 +311,39 @@ const LessonEditor: React.FC<LessonEditorProps> = ({ lesson, onSave, onCancel, o
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       Câu luyện đọc (Mỗi câu 1 dòng)
                     </label>
-                    {!isCustomLesson && (
-                      <button onClick={() => copyFromSgk('sentences')} className="text-[10px] flex items-center gap-1 text-purple-600 font-bold hover:underline bg-purple-50 px-3 py-1 rounded-full"><Copy size={12}/> Chép từ SGK</button>
-                    )}
+                    <div className="flex gap-2">
+                      {!isCustomLesson && (
+                        <button onClick={() => copyFromSgk('sentences')} className="text-[10px] flex items-center gap-1 text-purple-600 font-bold hover:underline bg-purple-50 px-3 py-1 rounded-full"><Copy size={12}/> Chép từ SGK</button>
+                      )}
+                      <button onClick={() => handleCopyText(editedLesson.content.sentences?.join('\n') || '')} className="text-[10px] flex items-center gap-1 text-blue-600 font-bold hover:underline bg-blue-50 px-3 py-1 rounded-full"><Copy size={12}/> Sao chép</button>
+                      <button onClick={() => handlePasteText('sentences')} className="text-[10px] flex items-center gap-1 text-green-600 font-bold hover:underline bg-green-50 px-3 py-1 rounded-full"><FileText size={12}/> Dán</button>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mb-2">
+                    <button 
+                      onClick={() => handleUpdateAlignment('sentences', 'left')}
+                      className={`p-2 rounded-lg border ${textAlignments.sentences === 'left' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+                    >
+                      <AlignLeft size={16} />
+                    </button>
+                    <button 
+                      onClick={() => handleUpdateAlignment('sentences', 'center')}
+                      className={`p-2 rounded-lg border ${textAlignments.sentences === 'center' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+                    >
+                      <AlignCenter size={16} />
+                    </button>
+                    <button 
+                      onClick={() => handleUpdateAlignment('sentences', 'right')}
+                      className={`p-2 rounded-lg border ${textAlignments.sentences === 'right' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+                    >
+                      <AlignRight size={16} />
+                    </button>
                   </div>
                   <textarea 
                     value={editedLesson.content.sentences?.join('\n') || ''} 
                     onChange={(e) => handleUpdateContent('sentences', e.target.value.split('\n').filter(s => s.trim()))}
                     className="w-full p-6 rounded-[2rem] bg-white border-2 border-green-100 focus:border-green-500 focus:ring-4 focus:ring-green-50 outline-none min-h-[180px] font-bold text-xl text-green-700 leading-relaxed shadow-sm transition-all"
+                    style={{ textAlign: textAlignments.sentences }}
                     placeholder="Nhập các câu luyện đọc cho bé..."
                   />
                 </div>
@@ -291,14 +353,39 @@ const LessonEditor: React.FC<LessonEditorProps> = ({ lesson, onSave, onCancel, o
                       <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                       Đoạn văn (Mỗi đoạn 1 dòng)
                     </label>
-                    {!isCustomLesson && (
-                      <button onClick={() => copyFromSgk('paragraphs')} className="text-[10px] flex items-center gap-1 text-purple-600 font-bold hover:underline bg-purple-50 px-3 py-1 rounded-full"><Copy size={12}/> Chép từ SGK</button>
-                    )}
+                    <div className="flex gap-2">
+                      {!isCustomLesson && (
+                        <button onClick={() => copyFromSgk('paragraphs')} className="text-[10px] flex items-center gap-1 text-purple-600 font-bold hover:underline bg-purple-50 px-3 py-1 rounded-full"><Copy size={12}/> Chép từ SGK</button>
+                      )}
+                      <button onClick={() => handleCopyText(editedLesson.content.paragraphs?.join('\n') || '')} className="text-[10px] flex items-center gap-1 text-blue-600 font-bold hover:underline bg-blue-50 px-3 py-1 rounded-full"><Copy size={12}/> Sao chép</button>
+                      <button onClick={() => handlePasteText('paragraphs')} className="text-[10px] flex items-center gap-1 text-green-600 font-bold hover:underline bg-green-50 px-3 py-1 rounded-full"><FileText size={12}/> Dán</button>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mb-2">
+                    <button 
+                      onClick={() => handleUpdateAlignment('paragraphs', 'left')}
+                      className={`p-2 rounded-lg border ${textAlignments.paragraphs === 'left' ? 'bg-purple-100 border-purple-400 text-purple-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+                    >
+                      <AlignLeft size={16} />
+                    </button>
+                    <button 
+                      onClick={() => handleUpdateAlignment('paragraphs', 'center')}
+                      className={`p-2 rounded-lg border ${textAlignments.paragraphs === 'center' ? 'bg-purple-100 border-purple-400 text-purple-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+                    >
+                      <AlignCenter size={16} />
+                    </button>
+                    <button 
+                      onClick={() => handleUpdateAlignment('paragraphs', 'right')}
+                      className={`p-2 rounded-lg border ${textAlignments.paragraphs === 'right' ? 'bg-purple-100 border-purple-400 text-purple-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+                    >
+                      <AlignRight size={16} />
+                    </button>
                   </div>
                   <textarea 
                     value={editedLesson.content.paragraphs?.join('\n') || ''} 
                     onChange={(e) => handleUpdateContent('paragraphs', e.target.value.split('\n').filter(s => s.trim()))}
                     className="w-full p-6 rounded-[2rem] bg-white border-2 border-purple-100 focus:border-purple-500 focus:ring-4 focus:ring-purple-50 outline-none min-h-[180px] font-bold text-xl text-purple-800 leading-relaxed shadow-sm transition-all"
+                    style={{ textAlign: textAlignments.paragraphs }}
                     placeholder="Nhập các đoạn văn luyện đọc..."
                   />
                 </div>
@@ -307,7 +394,65 @@ const LessonEditor: React.FC<LessonEditorProps> = ({ lesson, onSave, onCancel, o
 
             <hr className="border-gray-100" />
 
-            {/* Exercises section */}
+            {/* Video Link Section */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h4 className="text-xl font-black text-gray-800 flex items-center gap-2">
+                  <Video size={20} className="text-red-500" />
+                  Video minh họa (YouTube, Vimeo, etc.)
+                </h4>
+              </div>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <div className="flex-1 relative">
+                    <Link size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input 
+                      type="url" 
+                      value={videoLink} 
+                      onChange={(e) => handleUpdateVideoLink(e.target.value)}
+                      className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border-2 border-gray-100 focus:border-red-400 focus:ring-4 focus:ring-red-50 outline-none font-medium text-gray-800 shadow-sm transition-all"
+                      placeholder="https://www.youtube.com/watch?v=..."
+                    />
+                  </div>
+                  <button 
+                    onClick={() => handleCopyText(videoLink)}
+                    className="px-4 py-4 bg-blue-50 text-blue-600 rounded-2xl hover:bg-blue-100 transition-all font-bold"
+                    title="Sao chép link"
+                  >
+                    <Copy size={16} />
+                  </button>
+                  <button 
+                    onClick={async () => {
+                      try {
+                        const text = await navigator.clipboard.readText();
+                        handleUpdateVideoLink(text);
+                      } catch (err) {
+                        console.error('Không thể dán từ clipboard:', err);
+                      }
+                    }}
+                    className="px-4 py-4 bg-green-50 text-green-600 rounded-2xl hover:bg-green-100 transition-all font-bold"
+                    title="Dán link"
+                  >
+                    <FileText size={16} />
+                  </button>
+                </div>
+                {videoLink && (
+                  <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                    <p className="text-sm text-gray-600 font-medium mb-2">Preview:</p>
+                    <div className="aspect-video bg-black rounded-lg overflow-hidden">
+                      <iframe 
+                        src={videoLink.replace('watch?v=', 'embed/')} 
+                        className="w-full h-full" 
+                        frameBorder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen
+                        title="Video Preview"
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
             <div className="space-y-6">
               <div className="flex justify-between items-center">
                 <h4 className="text-xl font-black text-gray-800">Thử thách vận dụng của riêng lớp</h4>

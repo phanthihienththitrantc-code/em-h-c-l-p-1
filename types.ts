@@ -87,6 +87,11 @@ export interface Lesson {
   type: 'alphabet' | 'syllable' | 'story' | 'review';
   content: LessonContent;
   customAudio?: Record<string, string>; // mapping of text to base64 audio
+  videoLink?: string; // YouTube, Vimeo, etc. video link
+  textAlignment?: {
+    sentences?: 'left' | 'center' | 'right';
+    paragraphs?: 'left' | 'center' | 'right';
+  };
 }
 
 export interface Assignment {

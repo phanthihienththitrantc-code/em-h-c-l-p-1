@@ -433,6 +433,21 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
             <p className="text-orange-600 font-semibold mt-1 text-lg">Trang {selectedLesson.pageNumber} • Tập {selectedLesson.volume}</p>
           </div>
 
+          {selectedLesson.videoLink && (
+            <div className="mb-8">
+              <div className="aspect-video bg-black rounded-[2rem] overflow-hidden shadow-xl">
+                <iframe 
+                  src={selectedLesson.videoLink.replace('watch?v=', 'embed/')} 
+                  className="w-full h-full" 
+                  frameBorder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen
+                  title="Video minh họa"
+                ></iframe>
+              </div>
+            </div>
+          )}
+
           <div className="space-y-16">
             {selectedLesson.content.sounds && selectedLesson.content.sounds.length > 0 && (
               <section className={`space-y-4 p-4 rounded-[1.5rem] ${isRecording === 'section-sounds' ? 'bg-orange-50 ring-2 ring-orange-200' : ''}`}>
@@ -558,7 +573,7 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
                   </div>
                 </div>
                 {selectedLesson.volume === 2 ? (
-                  <div className={`bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-green-100 text-xl font-medium text-gray-800 leading-[1.6] ${isPoem ? 'space-y-0 text-center flex flex-col items-center' : 'space-y-2'}`} style={{ fontFamily: 'Quicksand, sans-serif' }}>
+                  <div className={`bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-green-100 text-xl font-medium text-gray-800 leading-[1.6] ${isPoem ? 'space-y-0 text-center flex flex-col items-center' : 'space-y-2'}`} style={{ fontFamily: 'Quicksand, sans-serif', textAlign: selectedLesson.textAlignment?.paragraphs || 'left' }}>
                     {selectedLesson.content.paragraphs.map((para, idx) => (
                       <div key={idx} className={`relative group ${isPoem ? 'w-fit' : ''}`}>
                         <p 
