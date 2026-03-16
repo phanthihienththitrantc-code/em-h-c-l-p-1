@@ -427,56 +427,56 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
           </div>
         </div>
 
-        <div className="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border-t-8 border-orange-400">
-          <div className="mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-800 leading-tight">{selectedLesson.title}</h2>
-            <p className="text-orange-600 font-bold mt-2 italic">Trang {selectedLesson.pageNumber} • Tập {selectedLesson.volume}</p>
+        <div className="bg-white rounded-[2rem] p-6 md:p-8 shadow-xl border-t-4 border-orange-400">
+          <div className="mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-tight" style={{ fontFamily: 'Quicksand, sans-serif' }}>{selectedLesson.title}</h2>
+            <p className="text-orange-600 font-semibold mt-1 text-lg">Trang {selectedLesson.pageNumber} • Tập {selectedLesson.volume}</p>
           </div>
 
           <div className="space-y-16">
             {selectedLesson.content.sounds && selectedLesson.content.sounds.length > 0 && (
-              <section className={`space-y-6 p-6 rounded-[3rem] ${isRecording === 'section-sounds' ? 'bg-orange-50 ring-4 ring-orange-200' : ''}`}>
+              <section className={`space-y-4 p-4 rounded-[1.5rem] ${isRecording === 'section-sounds' ? 'bg-orange-50 ring-2 ring-orange-200' : ''}`}>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-black text-orange-600 flex items-center gap-4">
-                    <span className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center">{sectionNumber++}</span> Phát âm
+                  <h3 className="text-xl font-bold text-orange-600 flex items-center gap-3">
+                    <span className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center text-sm font-bold">{sectionNumber++}</span> Phát âm
                   </h3>
-                  <div className="flex gap-3">
-                    <button onClick={() => handleReadAloud(selectedLesson.content.sounds!.join(", "), 'sound-all')} className="p-3 bg-white text-orange-600 rounded-2xl border-2 border-orange-100">
-                      {isLoadingAudio === 'sound-all' ? <Loader2 className="animate-spin" /> : <Volume2 />}
+                  <div className="flex gap-2">
+                    <button onClick={() => handleReadAloud(selectedLesson.content.sounds!.join(", "), 'sound-all')} className="p-2 bg-white text-orange-600 rounded-lg border border-orange-100 hover:bg-orange-50 transition-all">
+                      {isLoadingAudio === 'sound-all' ? <Loader2 className="animate-spin w-4 h-4" /> : <Volume2 size={16} />}
                     </button>
-                    <button onClick={() => isRecording === 'section-sounds' ? stopRecording() : startSectionRecording(selectedLesson.content.sounds!, 'section-sounds')} className={`px-8 py-3 rounded-2xl font-black flex items-center gap-2 ${isRecording === 'section-sounds' ? 'bg-red-600 text-white animate-pulse' : 'bg-orange-600 text-white shadow-lg'}`}>
-                      {isRecording === 'section-sounds' ? <Square size={20} /> : <Mic size={20} />} {isRecording === 'section-sounds' ? 'Dừng' : 'Luyện đọc'}
+                    <button onClick={() => isRecording === 'section-sounds' ? stopRecording() : startSectionRecording(selectedLesson.content.sounds!, 'section-sounds')} className={`px-4 py-2 rounded-lg font-bold flex items-center gap-2 text-sm ${isRecording === 'section-sounds' ? 'bg-red-600 text-white animate-pulse' : 'bg-orange-600 text-white shadow-md'}`}>
+                      {isRecording === 'section-sounds' ? <Square size={14} /> : <Mic size={14} />} {isRecording === 'section-sounds' ? 'Dừng' : 'Luyện đọc'}
                     </button>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-4 pl-4">
+                <div className="flex flex-wrap gap-3 pl-4">
                   {selectedLesson.content.sounds.map((sound, idx) => (
-                    <div key={idx} className="flex flex-col items-center gap-2">
+                    <div key={idx} className="flex flex-col items-center gap-1">
                       <div className="relative group">
-                        <div className={`bg-white px-8 py-4 rounded-2xl text-5xl font-black text-orange-700 border-2 border-orange-50 shadow-sm cursor-pointer hover:bg-orange-50 transition-all ${isReadingAloud === `sound-${idx}` ? 'ring-4 ring-orange-400' : ''}`} onClick={() => handleReadAloud(sound, `sound-${idx}`)}>
+                        <div className={`bg-white px-6 py-3 rounded-xl text-2xl font-bold text-orange-700 border-2 border-orange-50 shadow-sm cursor-pointer hover:bg-orange-50 transition-all ${isReadingAloud === `sound-${idx}` ? 'ring-2 ring-orange-400' : ''}`} style={{ fontFamily: 'Quicksand, sans-serif' }} onClick={() => handleReadAloud(sound, `sound-${idx}`)}>
                           {sound}
                           {selectedLesson.customAudio?.[sound] && (
-                            <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-md">
-                              <Headphones size={12} />
+                            <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-sm">
+                              <Headphones size={8} />
                             </div>
                           )}
                         </div>
                         {isTeacherMode && (
-                          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-all z-10">
+                          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-all z-10">
                             <button 
                               onClick={() => isTeacherRecording === sound ? stopRecording() : startTeacherRecording(sound)}
-                              className={`p-2 rounded-full shadow-lg ${isTeacherRecording === sound ? 'bg-red-600 text-white animate-pulse' : 'bg-white text-blue-600 border border-blue-100'}`}
+                              className={`p-1 rounded-full shadow-sm ${isTeacherRecording === sound ? 'bg-red-600 text-white animate-pulse' : 'bg-white text-blue-600 border border-blue-100'}`}
                               title="Ghi âm mẫu"
                             >
-                              {isTeacherRecording === sound ? <Square size={12} /> : <Mic size={12} />}
+                              {isTeacherRecording === sound ? <Square size={8} /> : <Mic size={8} />}
                             </button>
                             {selectedLesson.customAudio?.[sound] && (
                               <button 
                                 onClick={() => deleteTeacherRecording(sound)}
-                                className="p-2 bg-white text-red-500 rounded-full shadow-lg border border-red-100"
+                                className="p-1 bg-white text-red-500 rounded-full shadow-sm border border-red-100"
                                 title="Xóa bản ghi"
                               >
-                                <Trash2 size={12} />
+                                <Trash2 size={8} />
                               </button>
                             )}
                           </div>
@@ -489,48 +489,49 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
             )}
 
             {selectedLesson.content.words && selectedLesson.content.words.length > 0 && (
-              <section className={`space-y-6 p-6 rounded-[3rem] ${isRecording === 'section-words' ? 'bg-blue-50 ring-4 ring-blue-200' : ''}`}>
+              <section className={`space-y-4 p-4 rounded-[1.5rem] ${isRecording === 'section-words' ? 'bg-blue-50 ring-2 ring-blue-200' : ''}`}>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-black text-blue-600 flex items-center gap-4">
-                    <span className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center">{sectionNumber++}</span> Từ ngữ
+                  <h3 className="text-xl font-bold text-blue-600 flex items-center gap-3">
+                    <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-sm font-bold">{sectionNumber++}</span> Từ ngữ
                   </h3>
-                  <div className="flex gap-3">
-                    <button onClick={() => handleReadAloud(selectedLesson.content.words!.join(", "), 'word-all')} className="p-3 bg-white text-blue-600 rounded-2xl border-2 border-blue-100">
-                      {isLoadingAudio === 'word-all' ? <Loader2 className="animate-spin" /> : <Volume2 />}
+                  <div className="flex gap-2">
+                    <button onClick={() => handleReadAloud(selectedLesson.content.words!.join(", "), 'word-all')} className="p-2 bg-white text-blue-600 rounded-lg border border-blue-100 hover:bg-blue-50 transition-all">
+                      {isLoadingAudio === 'word-all' ? <Loader2 className="animate-spin w-4 h-4" /> : <Volume2 size={16} />}
                     </button>
-                    <button onClick={() => isRecording === 'section-words' ? stopRecording() : startSectionRecording(selectedLesson.content.words!, 'section-words')} className={`px-8 py-3 rounded-2xl font-black flex items-center gap-2 ${isRecording === 'section-words' ? 'bg-red-600 text-white' : 'bg-blue-600 text-white'}`}>
-                      {isRecording === 'section-words' ? <Square size={20} /> : <Mic size={20} />} {isRecording === 'section-words' ? 'Dừng' : 'Luyện đọc'}
+                    <button onClick={() => isRecording === 'section-words' ? stopRecording() : startSectionRecording(selectedLesson.content.words!, 'section-words')} className={`px-4 py-2 rounded-lg font-bold flex items-center gap-2 text-sm ${isRecording === 'section-words' ? 'bg-red-600 text-white' : 'bg-blue-600 text-white'}`}>
+                      {isRecording === 'section-words' ? <Square size={14} /> : <Mic size={14} />} {isRecording === 'section-words' ? 'Dừng' : 'Luyện đọc'}
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pl-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pl-4">
                   {selectedLesson.content.words.map((word, idx) => (
                     <div key={idx} className="relative group">
                       <div 
-                        className={`bg-white px-4 py-4 rounded-xl text-2xl font-bold text-blue-800 border-b-4 border-blue-100 text-center cursor-pointer hover:bg-blue-50 transition-all ${isReadingAloud === `word-${idx}` ? 'bg-blue-100 border-blue-400' : ''}`}
+                        className={`bg-white px-3 py-3 rounded-lg text-lg font-semibold text-blue-800 border-b-2 border-blue-100 text-center cursor-pointer hover:bg-blue-50 transition-all ${isReadingAloud === `word-${idx}` ? 'bg-blue-100 border-blue-400' : ''}`}
+                        style={{ fontFamily: 'Quicksand, sans-serif' }}
                         onClick={() => handleReadAloud(word, `word-${idx}`)}
                       >
                         {word}
                         {selectedLesson.customAudio?.[word] && (
-                          <div className="absolute -top-2 -right-2 w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-md">
-                            <Headphones size={10} />
+                          <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-sm">
+                            <Headphones size={8} />
                           </div>
                         )}
                       </div>
                       {isTeacherMode && (
-                        <div className="absolute -top-8 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                        <div className="absolute -top-6 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
                           <button 
                             onClick={() => isTeacherRecording === word ? stopRecording() : startTeacherRecording(word)}
-                            className={`p-1.5 rounded-full shadow-md ${isTeacherRecording === word ? 'bg-red-600 text-white animate-pulse' : 'bg-white text-blue-600 border border-blue-50'}`}
+                            className={`p-1 rounded-full shadow-sm ${isTeacherRecording === word ? 'bg-red-600 text-white animate-pulse' : 'bg-white text-blue-600 border border-blue-100'}`}
                           >
-                            {isTeacherRecording === word ? <Square size={10} /> : <Mic size={10} />}
+                            {isTeacherRecording === word ? <Square size={8} /> : <Mic size={8} />}
                           </button>
                           {selectedLesson.customAudio?.[word] && (
                             <button 
                               onClick={() => deleteTeacherRecording(word)}
-                              className="p-1.5 bg-white text-red-500 rounded-full shadow-md border border-red-50"
+                              className="p-1 bg-white text-red-500 rounded-full shadow-sm border border-red-100"
                             >
-                              <Trash2 size={10} />
+                              <Trash2 size={8} />
                             </button>
                           )}
                         </div>
@@ -542,49 +543,49 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
             )}
 
             {selectedLesson.content.paragraphs && selectedLesson.content.paragraphs.length > 0 && (
-              <section className={`space-y-6 p-8 rounded-[3rem] ${isRecording === 'section-paragraphs' ? 'bg-green-50 ring-4 ring-green-200' : 'bg-gray-50'}`}>
+              <section className={`space-y-4 p-4 rounded-[1.5rem] ${isRecording === 'section-paragraphs' ? 'bg-green-50 ring-2 ring-green-200' : 'bg-gray-50'}`}>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-black text-green-700 flex items-center gap-4">
-                    <span className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center">{sectionNumber++}</span> {selectedLesson.volume === 2 ? 'Nội dung bài tập đọc' : 'Luyện đọc đoạn văn'}
+                  <h3 className="text-xl font-bold text-green-700 flex items-center gap-3">
+                    <span className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-sm font-bold">{sectionNumber++}</span> {selectedLesson.volume === 2 ? 'Nội dung bài tập đọc' : 'Luyện đọc đoạn văn'}
                   </h3>
-                  <div className="flex gap-3">
-                    <button onClick={() => handleReadAloud(selectedLesson.content.paragraphs!.join(" "), 'para-all')} className="p-3 bg-white text-green-600 rounded-2xl border-2 border-green-100">
-                      {isLoadingAudio === 'para-all' ? <Loader2 className="animate-spin" /> : <Volume2 />}
+                  <div className="flex gap-2">
+                    <button onClick={() => handleReadAloud(selectedLesson.content.paragraphs!.join(" "), 'para-all')} className="p-2 bg-white text-green-600 rounded-lg border border-green-100 hover:bg-green-50 transition-all">
+                      {isLoadingAudio === 'para-all' ? <Loader2 className="animate-spin w-4 h-4" /> : <Volume2 size={16} />}
                     </button>
-                    <button onClick={() => isRecording === 'section-paragraphs' ? stopRecording() : startSectionRecording(selectedLesson.content.paragraphs!, 'section-paragraphs')} className={`px-8 py-3 rounded-2xl font-black flex items-center gap-2 shadow-lg ${isRecording === 'section-paragraphs' ? 'bg-red-600 text-white animate-pulse' : 'bg-green-600 text-white'}`}>
-                      {isRecording === 'section-paragraphs' ? <Square size={20} /> : <Mic size={20} />} {isRecording === 'section-paragraphs' ? 'Dừng & Chấm điểm' : 'Đọc cả đoạn'}
+                    <button onClick={() => isRecording === 'section-paragraphs' ? stopRecording() : startSectionRecording(selectedLesson.content.paragraphs!, 'section-paragraphs')} className={`px-4 py-2 rounded-lg font-bold flex items-center gap-2 text-sm shadow-md ${isRecording === 'section-paragraphs' ? 'bg-red-600 text-white animate-pulse' : 'bg-green-600 text-white'}`}>
+                      {isRecording === 'section-paragraphs' ? <Square size={14} /> : <Mic size={14} />} {isRecording === 'section-paragraphs' ? 'Dừng & Chấm điểm' : 'Đọc cả đoạn'}
                     </button>
                   </div>
                 </div>
                 {selectedLesson.volume === 2 ? (
-                  <div className={`bg-white p-8 md:p-12 rounded-[2rem] shadow-sm border border-green-100 text-[28px] font-medium text-gray-800 leading-[1.8] ${isPoem ? 'space-y-0 text-center flex flex-col items-center' : 'space-y-2'}`}>
+                  <div className={`bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-green-100 text-xl font-medium text-gray-800 leading-[1.6] ${isPoem ? 'space-y-0 text-center flex flex-col items-center' : 'space-y-2'}`} style={{ fontFamily: 'Quicksand, sans-serif' }}>
                     {selectedLesson.content.paragraphs.map((para, idx) => (
                       <div key={idx} className={`relative group ${isPoem ? 'w-fit' : ''}`}>
                         <p 
-                          className={`cursor-pointer hover:bg-green-50 px-6 ${isPoem ? 'py-1.5' : 'py-4'} -mx-6 rounded-2xl transition-all ${isReadingAloud === `para-${idx}` ? 'bg-green-100 text-green-900' : ''}`}
+                          className={`cursor-pointer hover:bg-green-50 px-4 ${isPoem ? 'py-1' : 'py-2'} -mx-4 rounded-xl transition-all ${isReadingAloud === `para-${idx}` ? 'bg-green-100 text-green-900' : ''}`}
                           onClick={() => handleReadAloud(para, `para-${idx}`)}
                         >
-                          {!isPoem && <span className="inline-block w-12"></span>}{para}
+                          {!isPoem && <span className="inline-block w-8"></span>}{para}
                           {selectedLesson.customAudio?.[para] && (
-                            <span className="inline-flex ml-4 w-8 h-8 bg-blue-600 text-white rounded-full items-center justify-center shadow-md align-middle">
-                              <Headphones size={16} />
+                            <span className="inline-flex ml-2 w-6 h-6 bg-blue-600 text-white rounded-full items-center justify-center shadow-sm align-middle">
+                              <Headphones size={12} />
                             </span>
                           )}
                         </p>
                         {isTeacherMode && (
-                          <div className={`absolute top-1/2 -translate-y-1/2 ${isPoem ? '-right-16' : 'right-4'} flex gap-2 opacity-0 group-hover:opacity-100 transition-all`}>
+                          <div className={`absolute top-1/2 -translate-y-1/2 ${isPoem ? '-right-12' : 'right-2'} flex gap-1 opacity-0 group-hover:opacity-100 transition-all`}>
                             <button 
                               onClick={() => isTeacherRecording === para ? stopRecording() : startTeacherRecording(para)}
-                              className={`p-2 rounded-full shadow-md ${isTeacherRecording === para ? 'bg-red-600 text-white animate-pulse' : 'bg-white text-blue-600 border border-blue-100'}`}
+                              className={`p-1.5 rounded-full shadow-md ${isTeacherRecording === para ? 'bg-red-600 text-white animate-pulse' : 'bg-white text-blue-600 border border-blue-100'}`}
                             >
-                              {isTeacherRecording === para ? <Square size={14} /> : <Mic size={14} />}
+                              {isTeacherRecording === para ? <Square size={10} /> : <Mic size={10} />}
                             </button>
                             {selectedLesson.customAudio?.[para] && (
                               <button 
                                 onClick={() => deleteTeacherRecording(para)}
-                                className="p-2 bg-white text-red-500 rounded-full shadow-md border border-red-100"
+                                className="p-1.5 bg-white text-red-500 rounded-full shadow-md border border-red-100"
                               >
-                                <Trash2 size={14} />
+                                <Trash2 size={10} />
                               </button>
                             )}
                           </div>
@@ -593,34 +594,35 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
                     ))}
                   </div>
                 ) : (
-                  <div className="space-y-8 pl-4">
+                  <div className="space-y-6 pl-4">
                     {selectedLesson.content.paragraphs.map((para, idx) => (
                       <div key={idx} className="relative group">
                         <div 
-                          className={`text-3xl font-medium text-gray-700 leading-relaxed bg-white p-8 rounded-[2rem] shadow-sm border-l-8 border-green-400 cursor-pointer hover:bg-green-50 transition-all ${isReadingAloud === `para-${idx}` ? 'bg-green-100' : ''}`}
+                          className={`text-lg font-medium text-gray-700 leading-relaxed bg-white p-6 rounded-[1.5rem] shadow-sm border-l-4 border-green-400 cursor-pointer hover:bg-green-50 transition-all ${isReadingAloud === `para-${idx}` ? 'bg-green-100' : ''}`}
+                          style={{ fontFamily: 'Quicksand, sans-serif' }}
                           onClick={() => handleReadAloud(para, `para-${idx}`)}
                         >
-                          {para}
+                          <span className="inline-block w-6"></span>{para}
                           {selectedLesson.customAudio?.[para] && (
-                            <div className="absolute top-4 right-4 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-md">
-                              <Headphones size={16} />
+                            <div className="absolute top-3 right-3 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-sm">
+                              <Headphones size={12} />
                             </div>
                           )}
                         </div>
                         {isTeacherMode && (
-                          <div className="absolute -top-4 right-16 flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                          <div className="absolute -top-3 right-12 flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
                             <button 
                               onClick={() => isTeacherRecording === para ? stopRecording() : startTeacherRecording(para)}
-                              className={`p-3 rounded-full shadow-xl ${isTeacherRecording === para ? 'bg-red-600 text-white animate-pulse' : 'bg-white text-blue-600 border border-blue-100'}`}
+                              className={`p-2 rounded-full shadow-md ${isTeacherRecording === para ? 'bg-red-600 text-white animate-pulse' : 'bg-white text-blue-600 border border-blue-100'}`}
                             >
-                              {isTeacherRecording === para ? <Square size={16} /> : <Mic size={16} />}
+                              {isTeacherRecording === para ? <Square size={12} /> : <Mic size={12} />}
                             </button>
                             {selectedLesson.customAudio?.[para] && (
                               <button 
                                 onClick={() => deleteTeacherRecording(para)}
-                                className="p-3 bg-white text-red-500 rounded-full shadow-xl border border-red-100"
+                                className="p-2 bg-white text-red-500 rounded-full shadow-md border border-red-100"
                               >
-                                <Trash2 size={16} />
+                                <Trash2 size={12} />
                               </button>
                             )}
                           </div>
