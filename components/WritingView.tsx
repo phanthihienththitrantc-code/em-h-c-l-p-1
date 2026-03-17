@@ -304,7 +304,12 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
                     </div>
                   ) : (
                     <div className="w-full h-full bg-white writing-grid border-4 border-slate-100 rounded-3xl flex items-center justify-center relative shadow-inner overflow-hidden">
-                      <span className="text-[140px] font-bold text-slate-800 opacity-90 select-none animate-in fade-in duration-500" style={{ fontFamily: 'Arial, sans-serif', textTransform: 'lowercase' }}>
+                      <span className="text-[140px] font-bold text-slate-800 opacity-90 select-none animate-in fade-in duration-500" style={{ 
+                        fontFamily: 'Arial, sans-serif', 
+                        textTransform: 'lowercase',
+                        lineHeight: '1',
+                        letterSpacing: '0.05em'
+                      }}>
                         {selectedExercise.text.toLowerCase()}
                       </span>
                       <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/5 transition-colors pointer-events-none"></div>
