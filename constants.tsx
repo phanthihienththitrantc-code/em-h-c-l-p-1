@@ -146,6 +146,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['tán lá', 'gõ cửa', 'dâng cao', 'buồm lớn', 'lặng im', 'ra khơi', 'vòm lá biếc'],
       paragraphs: ['Ai là bạn gió?', 'Mà gió đi tìm', 'Bay theo cánh chim', 'Lùa trong tán lá...', 'Gió nhớ bạn quá', 'Nên gõ cửa hoài', 'Đẩy sóng dâng cao', 'Thổi căng buồm lớn.', 'Khi gió đi vắng', 'Lá buồn lặng im', 'Vắng cả cánh chim', 'Chẳng ai gõ cửa.', 'Sóng ngủ trong nước', 'Buồm chẳng ra khơi', 'Ai gọi: Gió ơi', 'Trong vòm lá biếc.'],
       exercises: [createSelectionEx('T2-1-3', 'Ở khổ thơ thứ nhất, gió đã làm gì để tìm bạn?', ['Bay theo cánh chim, lùa trong tán lá', 'Ngủ trong nước', 'Chẳng ra khơi'], 'Bay theo cánh chim, lùa trong tán lá')]
     }
@@ -157,6 +158,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['xoạc chân', 'tên bắn', 'vấp phải', 'ngã oạch', 'giải thưởng'],
       paragraphs: ['Nai và hoẵng tham dự một cuộc chạy đua. Trước vạch xuất phát, nai và hoẵng xoạc chân lấy đà. Sau khi trọng tài ra hiệu, hai bạn lao như tên bắn. Cả hai luôn ở vị trí dẫn đầu. Bỗng nhiên, hoẵng vấp phải một hòn đá rồi ngã oạch. Nai vội dừng lại, đỡ hoẵng đứng dậy.', 'Nai và hoẵng về đích cuối cùng. Nhưng cả hai đều được tặng giải thưởng tình bạn.'],
       exercises: [createSelectionEx('T2-1-4', 'Vì sao hoẵng bị ngã?', ['Vấp phải hòn đá', 'Bị nai xô ngã', 'Chạy quá nhanh'], 'Vấp phải hòn đá')]
     }
@@ -168,6 +170,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['buồn bã', 'ngúc ngoắc', 'huơ vòi'],
       paragraphs: ['Hôm nay là sinh nhật của voi con, nhưng nó bị ốm. Đang buồn bã, bỗng voi con nghe tiếng gọi. Thì ra các bạn đến chúc mừng sinh nhật voi. Thỏ trắng mang cà rốt. Gấu đen ngoạm nguyên một nải chuối. Khỉ vàng và sóc nâu tặng voi tiết mục "ngúc ngoắc đuôi". Vẹt mỏ khoằm thay mặt các bạn nói những lời chúc tốt đẹp.', 'Voi con vui ơi là vui. Nó huơ vòi mấy vòng để cảm ơn các bạn.'],
       exercises: [createSelectionEx('T2-1-5', 'Những bạn nào đến mừng sinh nhật voi con?', ['Thỏ trắng, gấu đen, khỉ vàng, sóc nâu, vẹt mỏ khoằm', 'Chỉ có thỏ trắng', 'Chỉ có gấu đen'], 'Thỏ trắng, gấu đen, khỉ vàng, sóc nâu, vẹt mỏ khoằm')]
     }
@@ -179,6 +182,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['hồi hộp', 'thủ thỉ', 'tung tăng'],
       paragraphs: ['Ngày đầu đi học, Nam hồi hộp lắm. Mẹ nhẹ nhàng đặt một nụ hôn vào bàn tay Nam và dặn:', '– Mỗi khi lo lắng, con hãy áp bàn tay này lên má. Mẹ lúc nào cũng ở bên con.', 'Nam cảm thấy thật ấm áp. Cậu im lặng rồi đột nhiên mỉm cười:', '– Mẹ đưa tay cho con nào!', 'Nam đặt một nụ hôn vào bàn tay mẹ rồi thủ thỉ:', '– Bây giờ thì mẹ cũng có nụ hôn trên bàn tay rồi. Con yêu mẹ!', 'Nam chào mẹ và tung tăng bước vào lớp.'],
       exercises: [createSelectionEx('T2-2-1', 'Ngày đầu đi học, Nam thế nào?', ['Hồi hộp', 'Vui vẻ', 'Buồn bã'], 'Hồi hộp')]
     }
@@ -190,6 +194,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['dỗ dành', 'dịu dàng', 'nhường em'],
       paragraphs: ['Làm anh khó đấy', 'Phải đâu chuyện đùa', 'Với em gái bé', 'Phải "người lớn" cơ.', 'Khi em bé khóc', 'Anh phải dỗ dành', 'Nếu em bé ngã', 'Anh nâng dịu dàng.', 'Mẹ cho quà bánh', 'Chia em phần hơn', 'Có đồ chơi đẹp', 'Cũng nhường em luôn.', 'Làm anh thật khó', 'Nhưng mà thật vui', 'Ai yêu em bé', 'Thì làm được thôi.'],
       exercises: [createSelectionEx('T2-2-2', 'Làm anh thì cần làm những gì cho em?', ['Dỗ dành, nâng dịu dàng, chia quà bánh, nhường đồ chơi', 'Chỉ chơi cùng em', 'Chỉ nhường đồ chơi'], 'Dỗ dành, nâng dịu dàng, chia quà bánh, nhường đồ chơi')]
     }
@@ -201,6 +206,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['thức khuya', 'huỳnh huỵch', 'khúc khuỷu', 'vui sướng'],
       paragraphs: ['Bố mẹ cho Nam và Đức đi chơi núi. Hôm trước, mẹ thức khuya để chuẩn bị quần áo, thức ăn, nước uống và cả tuýp thuốc chống côn trùng.', 'Hôm sau, khi mặt trời lên, cả nhà đã tới chân núi. Nam và Đức thích thú, đuổi nhau huỳnh huỵch. Càng lên cao, đường càng dốc và khúc khuỷu, bố phải cõng Đức. Thỉnh thoảng, mẹ lau mồ hôi cho hai anh em.', 'Lúc lên đến đỉnh núi, hai anh em vui sướng hét vang.'],
       exercises: [createSelectionEx('T2-2-3', 'Nam và Đức được bố mẹ cho đi đâu?', ['Đi chơi núi', 'Đi tắm biển', 'Đi công viên'], 'Đi chơi núi')]
     }
@@ -212,6 +218,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['chích choè', 'thiu thiu', 'lim dim', 'hương thơm'],
       paragraphs: ['Ơi chích choè ơi!', 'Chim đừng hót nữa,', 'Bà em ốm rồi,', 'Lặng cho bà ngủ.', 'Bàn tay bé nhỏ', 'Vẫy quạt thật đều', 'Ngấn nắng thiu thiu', 'Đậu trên tường trắng.', 'Căn nhà đã vắng', 'Cốc chén lặng im', 'Đôi mắt lim dim', 'Ngủ ngon bà nhé.', 'Hoa cam, hoa khế', 'Chín lặng trong vườn,', 'Bà mơ tay cháu', 'Quạt đầy hương thơm.'],
       exercises: [createSelectionEx('T2-2-4', 'Vì sao bạn nhỏ không muốn chích choè hót nữa?', ['Vì bà ốm, cần yên tĩnh để ngủ', 'Vì chim hót không hay', 'Vì bạn nhỏ đang học bài'], 'Vì bà ốm, cần yên tĩnh để ngủ')]
     }
@@ -223,6 +230,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['liên hoan', 'quây quần'],
       paragraphs: ['Thấy mẹ đi chợ về, Chi hỏi:', '– Sao mẹ mua nhiều đồ ăn thế ạ?', '– Đố con hôm nay là ngày gì?', 'Chi chạy lại xem lịch:', '– A, ngày 28 tháng 6, Ngày Gia đình Việt Nam.', '– Đúng rồi. Vì thế, hôm nay nhà mình liên hoan con ạ.', 'Chi vui lắm. Em nhặt rau giúp mẹ. Bố dọn nhà, rửa xoong nồi, cốc chén. Ông bà trông em bé để mẹ nấu ăn. Cả nhà quây quần bên nhau. Bữa cơm thật tuyệt. Chi thích ngày nào cũng là Ngày Gia đình Việt Nam.'],
       exercises: [createSelectionEx('T2-2-5', 'Ngày Gia đình Việt Nam là ngày nào?', ['Ngày 28 tháng 6', 'Ngày 1 tháng 6', 'Ngày 8 tháng 3'], 'Ngày 28 tháng 6')]
     }
@@ -234,6 +242,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['xao xuyến', 'lảnh lót', 'thơm phức', 'mộc mạc'],
       paragraphs: ['Em yêu nhà em', 'Hàng xoan trước ngõ', 'Hoa xao xuyến nở', 'Như mây từng chùm.', 'Em yêu tiếng chim', 'Đầu hồi lảnh lót', 'Mái vàng thơm phức', 'Rạ đầy sân phơi.', 'Em yêu ngôi nhà', 'Gỗ, tre mộc mạc', 'Như yêu đất nước', 'Bốn mùa chim ca.'],
       exercises: [createSelectionEx('T2-2-6', 'Trước ngõ nhà của bạn nhỏ có gì?', ['Hàng xoan', 'Cây bàng', 'Cây phượng'], 'Hàng xoan')]
     }
@@ -245,6 +254,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['âu yếm', 'bỡ ngỡ', 'hiền từ'],
       paragraphs: ['Một buổi mai, mẹ âu yếm nắm tay tôi dẫn đi trên con đường làng dài và hẹp. Con đường này tôi đã đi lại nhiều lần, nhưng lần này tự nhiên thấy lạ. Cảnh vật xung quanh tôi đều thay đổi. Hôm nay tôi đi học.', 'Cũng như tôi, mấy cậu học trò mới bỡ ngỡ đứng nép bên người thân. Thầy giáo trẻ, gương mặt hiền từ, đón chúng tôi vào lớp. Tôi nhìn bàn ghế chỗ tôi ngồi rồi nhận là vật riêng của mình. Tôi nhìn bạn ngồi bên, người bạn chưa quen biết, nhưng không thấy xa lạ chút nào.'],
       exercises: [createSelectionEx('T2-3-1', 'Ngày đầu đi học, bạn nhỏ thấy cảnh vật xung quanh ra sao?', ['Đều thay đổi', 'Vẫn như cũ', 'Rất quen thuộc'], 'Đều thay đổi')]
     }
@@ -256,6 +266,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['lên nương', 'thầm thì', 'cọ xoè'],
       paragraphs: ['Hôm qua em tới trường', 'Mẹ dắt tay từng bước', 'Hôm nay mẹ lên nương', 'Một mình em tới lớp.', 'Trường của em be bé', 'Nằm lặng giữa rừng cây', 'Cô giáo em tre trẻ', 'Dạy em hát rất hay.', 'Hương rừng thơm đồi vắng', 'Nước suối trong thầm thì...', 'Cọ xoè ô che nắng', 'Râm mát đường em đi.'],
       exercises: [createSelectionEx('T2-3-2', 'Vì sao hôm nay bạn nhỏ đi học một mình?', ['Vì mẹ lên nương', 'Vì bạn nhỏ thích đi một mình', 'Vì trường ở gần nhà'], 'Vì mẹ lên nương')]
     }
@@ -267,6 +278,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['hí hoáy', 'say sưa', 'tỉ mỉ', 'nắn nót'],
       paragraphs: ['Hôm nay cô giáo cho lớp vẽ những gì yêu thích. Tuệ An hí hoáy vẽ siêu nhân áo đỏ, thắt lưng vàng. Gia Huy say sưa vẽ mèo máy, tỉ mỉ tô cái ria cong cong.', 'Cuối giờ, chúng tôi mang tranh đính lên bảng. Mọi ánh mắt đều hướng về bức tranh bông hoa bốn cánh của Hà.', 'Trên mỗi cánh hoa ghi tên một tổ trong lớp. Giữa nhụy hoa là cô giáo cười rất tươi. Bên dưới có dòng chữ nắn nót "Hoa yêu thương". Ai cũng thấy có mình trong tranh. Chúng tôi treo bức tranh ở góc sáng tạo của lớp.'],
       exercises: [createSelectionEx('T2-3-3', 'Bức tranh bông hoa bốn cánh được đặt tên là gì?', ['Hoa yêu thương', 'Hoa điểm mười', 'Hoa mặt trời'], 'Hoa yêu thương')]
     }
@@ -278,6 +290,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['xoè ra', 'ngơ ngác', 'tưng bừng'],
       paragraphs: ['Bên cửa lớp học', 'Có cây bàng già', 'Tán lá xoè ra', 'Như ô xanh mướt.', 'Bàng ghé cửa lớp', 'Nghe cô giảng bài', 'Mỗi buổi sớm mai', 'Quên ngày mưa nắng.', 'Cuối tuần, lớp vắng', 'Không thấy tiếng cô', 'Không bạn vui đùa', 'Tán bàng ngơ ngác.', 'Thứ hai trở lại', 'Lớp học tưng bừng', 'Tán xanh vui mừng', 'Vẫy chào các bạn.'],
       exercises: [createSelectionEx('T2-3-4', 'Trong khổ thơ đầu, cây bàng như thế nào?', ['Tán lá xoè ra như ô xanh mướt', 'Trụi lá', 'Đang ra hoa'], 'Tán lá xoè ra như ô xanh mướt')]
     }
@@ -289,6 +302,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['đẫy đà', 'dõng dạc', 'thân thiết'],
       paragraphs: ['Tôi là trống trường. Thân hình tôi đẫy đà, nước da nâu bóng. Học trò thường gọi tôi là bác trống. Có lẽ vì các bạn thấy tôi ở trường lâu lắm rồi. Chính tôi cũng không biết mình đến đây từ bao giờ.', 'Hằng ngày, tôi giúp học trò ra vào lớp đúng giờ. Ngày khai trường, tiếng của tôi dõng dạc "tùng... tùng... tùng...", báo hiệu một năm học mới.', 'Bây giờ có thêm anh chuông điện, thỉnh thoảng cũng "reng... reng... reng..." báo giờ học. Nhưng tôi vẫn là người bạn thân thiết của các cô cậu học trò.'],
       exercises: [createSelectionEx('T2-3-5', 'Hằng ngày, trống trường giúp học sinh việc gì?', ['Ra vào lớp đúng giờ', 'Hát hay hơn', 'Làm bài tập'], 'Ra vào lớp đúng giờ')]
     }
@@ -300,6 +314,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['nhịp nhàng', 'êm ái', 'hoà vang', 'vun vút'],
       paragraphs: ['Trống báo giờ ra chơi', 'Từng đàn chim áo trắng', 'Xếp sách vở mau thôi', 'Ùa ra ngoài sân nắng.', 'Chỗ này đây, bạn gái', 'Vui nhảy dây nhịp nhàng', 'Vòng quay đều êm ái', 'Rộn tiếng cười hoà vang.', 'Đằng kia, ấy bạn trai', 'Đá cầu bay vun vút', 'Đôi chân móc rất tài', 'Tung nắng hồng lên ngực.', 'Giờ chơi vừa chấm dứt', 'Đàn chim non vội vàng', 'Xếp hàng nhanh vào lớp', 'Bài học mới sang trang.'],
       exercises: [createSelectionEx('T2-3-6', 'Những trò chơi nào được nói tới trong bài?', ['Nhảy dây, đá cầu', 'Bắn bi, trốn tìm', 'Kéo co, ô ăn quan'], 'Nhảy dây, đá cầu')]
     }
@@ -311,6 +326,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['vi trùng', 'tiếp xúc', 'phòng bệnh'],
       paragraphs: ['Vi trùng có ở khắp nơi. Nhưng chúng ta không nhìn thấy được bằng mắt thường. Khi tay tiếp xúc với đồ vật, vi trùng dính vào tay.', 'Tay cầm thức ăn, vi trùng từ tay theo thức ăn đi vào cơ thể. Do đó, chúng ta có thể mắc bệnh.', 'Để phòng bệnh, chúng ta phải rửa tay trước khi ăn. Cần rửa tay bằng xà phòng với nước sạch.'],
       exercises: [createSelectionEx('T2-4-1', 'Vi trùng đi vào cơ thể con người bằng cách nào?', ['Từ tay theo thức ăn đi vào cơ thể', 'Qua đường hô hấp', 'Qua da'], 'Từ tay theo thức ăn đi vào cơ thể')]
     }
@@ -322,6 +338,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['dẫn bước', 'kết bạn', 'cởi mở'],
       paragraphs: ['Đi đến nơi nào', 'Lời chào đi trước', 'Lời chào dẫn bước', 'Chẳng sợ lạc nhà', 'Lời chào kết bạn', 'Con đường bớt xa', 'Lời chào là hoa', 'Nở từ lòng tốt', 'Là cơn gió mát', 'Buổi sáng đầu ngày', 'Như một bàn tay', 'Chân thành cởi mở', 'Ai ai cũng có', 'Chẳng nặng là bao', 'Bạn ơi đi đâu', 'Nhớ mang đi nhé.'],
       exercises: [createSelectionEx('T2-4-2', 'Lời chào được so sánh với những gì?', ['Hoa, cơn gió mát, bàn tay', 'Mặt trời, mặt trăng, ngôi sao', 'Dòng sông, ngọn núi, cánh đồng'], 'Hoa, cơn gió mát, bàn tay')]
     }
@@ -333,6 +350,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['tíu tít', 'xoa đầu'],
       paragraphs: ['Trong khu rừng nọ có một đàn dê con sống cùng mẹ. Một hôm, trước khi đi kiếm cỏ, dê mẹ dặn con:', '– Ai đến gọi cửa, các con đừng mở nhé! Chỉ mở cửa khi nghe tiếng mẹ.', 'Một con sói nấp gần đó. Đợi dê mẹ đi xa, nó gõ cửa và giả giọng dê mẹ.', 'Nhớ lời mẹ, đàn dê con nói:', '– Không phải giọng mẹ. Không mở.', 'Sói đành bỏ đi.', 'Một lúc sau, dê mẹ về. Nghe đúng tiếng mẹ, đàn dê con ra mở cửa và tíu tít khoe:', '– Lúc mẹ đi vắng, có tiếng gọi cửa, nhưng không phải giọng của mẹ nên chúng con không mở.', 'Dê mẹ xoa đầu đàn con:', '– Các con ngoan lắm!'],
       exercises: [createSelectionEx('T2-4-3', 'Dê mẹ dặn dê con chỉ được mở cửa khi nào?', ['Khi nghe tiếng mẹ', 'Khi nghe tiếng gõ cửa', 'Khi có người quen đến'], 'Khi nghe tiếng mẹ')]
     }
@@ -344,6 +362,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['hoảng hốt', 'suýt khóc', 'mừng rỡ'],
       paragraphs: ['Sáng chủ nhật, bố cho Nam và em đi công viên. Công viên đông như hội. Khi vào cổng, bố dặn: "Các con cẩn thận kẻo bị lạc. Nếu không may bị lạc, các con nhớ đi ra cổng này. Nhìn kìa, trên cổng có lá cờ rất to".', 'Công viên đẹp quá. Nam cứ mải mê xem hết chỗ này đến chỗ khác. Lúc ngoảnh lại thì không thấy bố và em đâu. Nam vừa chạy tìm vừa gọi "Bố ơi! Bố ơi!". Hoảng hốt, Nam suýt khóc. Chợt Nam nhìn thấy tấm biển "Lối ra cổng". Nhớ lời bố dặn, Nam đi theo hướng tấm biển chỉ đường. "A, lá cờ kia rồi!". Nam mừng rỡ khi thấy bố và em đang chờ ở đó.'],
       exercises: [createSelectionEx('T2-4-4', 'Khi vào cổng, bố dặn hai anh em Nam thế nào?', ['Nếu bị lạc, nhớ đi ra cổng có lá cờ rất to', 'Không được đi chơi xa', 'Phải nắm tay nhau'], 'Nếu bị lạc, nhớ đi ra cổng có lá cờ rất to')]
     }
@@ -355,6 +374,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['ngã ba', 'ngã tư', 'lộn xộn'],
       paragraphs: ['Ở các ngã ba, ngã tư đường phố thường có cây đèn ba màu: đỏ, vàng, xanh. Đèn đỏ báo hiệu người đi đường và các phương tiện giao thông phải dừng lại. Đèn xanh báo hiệu được phép di chuyển. Còn đèn vàng báo hiệu phải đi chậm lại trước khi dừng hẳn.', 'Cây đèn ba màu này được gọi là đèn giao thông. Nó điều khiển việc đi lại trên đường phố. Nếu không có đèn giao thông thì việc đi lại sẽ rất lộn xộn và nguy hiểm.', 'Tuân thủ sự điều khiển của đèn giao thông giúp chúng ta bảo đảm an toàn khi đi lại.'],
       exercises: [createSelectionEx('T2-4-5', 'Đèn giao thông có mấy màu?', ['3 màu: đỏ, vàng, xanh', '2 màu: đỏ, xanh', '4 màu: đỏ, vàng, xanh, trắng'], '3 màu: đỏ, vàng, xanh')]
     }
@@ -366,6 +386,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['vùng vẫy', 'nhanh trí', 'cảm động'],
       paragraphs: ['Một con kiến không may bị rơi xuống nước. Nó vùng vẫy và la lên:', '– Cứu tôi với, cứu tôi với!', 'Nghe tiếng kêu cứu của kiến, bồ câu nhanh trí nhặt một chiếc lá thả xuống nước. Kiến bám vào chiếc lá và leo được lên bờ.', 'Một hôm, kiến thấy người thợ săn đang ngắm bắn bồ câu. Ngay lập tức, nó bò đến, cắn vào chân anh ta. Người thợ săn giật mình. Bồ câu thấy động liền bay đi.', 'Bồ câu tìm đến chỗ kiến, cảm động nói:', '– Cảm ơn cậu đã cứu tớ.', 'Kiến đáp:', '– Cậu cũng giúp tớ thoát chết mà.', 'Cả hai đều rất vui vì đã giúp nhau.'],
       exercises: [createSelectionEx('T2-5-1', 'Bồ câu đã làm gì để cứu kiến?', ['Nhặt một chiếc lá thả xuống nước', 'Bay xuống vớt kiến lên', 'Gọi các bạn đến cứu'], 'Nhặt một chiếc lá thả xuống nước')]
     }
@@ -377,6 +398,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['trĩu cành', 'đâm chồi', 'khiêm nhường'],
       paragraphs: ['Hoa nở trên cành', 'Khoe muôn sắc thắm', 'Giữa vòm lá xanh', 'Toả hương trong nắng.', 'Để hoa nở đẹp', 'Để quả trĩu cành', 'Để lá biếc xanh', 'Rễ chìm trong đất...', 'Nếu không có rễ', 'Cây chẳng đâm chồi', 'Chẳng ra trái ngọt', 'Chẳng nở hoa tươi.', 'Rễ chẳng nhiều lời', 'Âm thầm, nhỏ bé', 'Làm đẹp cho đời', 'Khiêm nhường, lặng lẽ.'],
       exercises: [createSelectionEx('T2-5-2', 'Nhờ có rễ mà hoa, quả, lá như thế nào?', ['Hoa nở đẹp, quả trĩu cành, lá biếc xanh', 'Cây mau lớn', 'Cây không bị đổ'], 'Hoa nở đẹp, quả trĩu cành, lá biếc xanh')]
     }
@@ -388,6 +410,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['chuyền trên cành', 'trượt chân', 'túm lấy', 'van nài', 'nhảy nhót', 'buồn bực', 'gây gổ'],
       paragraphs: ['Một chú sóc đang chuyền trên cành cây bỗng trượt chân, rơi trúng đầu lão sói đang ngái ngủ. Sói chồm dậy, túm lấy sóc. Sóc van nài:', '– Xin hãy thả tôi ra!', 'Sói nói:', '– Được, ta sẽ thả, nhưng ngươi hãy nói cho ta biết: Vì sao bọn sóc các ngươi cứ nhảy nhót vui đùa suốt ngày, còn ta lúc nào cũng thấy buồn bực?', 'Sóc bảo:', '– Thả tôi ra, rồi tôi sẽ nói.', 'Sói thả sóc ra. Sóc nhảy tót lên cây cao, rồi đáp vọng xuống:', '– Mỗi khi nhìn thấy anh, chúng tôi đều bỏ chạy vì anh hay gây gổ. Anh hay buồn bực vì anh không có bạn bè. Còn chúng tôi lúc nào cũng vui vì chúng tôi có nhiều bạn tốt.'],
       exercises: [createSelectionEx('T2-5-3', 'Vì sao sói lúc nào cũng cảm thấy buồn bực?', ['Vì sói hay gây gổ, không có bạn bè', 'Vì sói không biết nhảy nhót', 'Vì sói hay buồn ngủ'], 'Vì sói hay gây gổ, không có bạn bè')]
     }
@@ -399,6 +422,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['chăn cừu', 'kêu toáng', 'tức tốc', 'khoái chí', 'hốt hoảng', 'thản nhiên', 'thoả thuê'],
       paragraphs: ['Có một chú bé chăn cừu thường thả cừu gần chân núi. Một hôm thấy buồn quá, chú nghĩ ra một trò đùa cho vui. Chú giả vờ kêu toáng lên:', '– Sói! Sói! Cứu tôi với!', 'Nghe tiếng kêu cứu, mấy bác nông dân đang làm việc gần đấy tức tốc chạy tới. Nhưng họ không thấy sói đâu. Thấy vậy, chú khoái chí lắm.', 'Mấy hôm sau, chú lại bày ra trò ấy. Các bác nông dân lại chạy tới. Rồi một hôm, sói đến thật. Chú hốt hoảng kêu gào xin cứu giúp. Các bác nông dân nghĩ là chú lại lừa mình, nên vẫn thản nhiên làm việc. Thế là sói thoả thuê ăn thịt hết cả đàn cừu.'],
       exercises: [createSelectionEx('T2-5-4', 'Ban đầu, nghe tiếng kêu cứu, mấy bác nông dân đã làm gì?', ['Tức tốc chạy tới', 'Không quan tâm', 'Báo cho người khác'], 'Tức tốc chạy tới')]
     }
@@ -410,6 +434,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['tiếng vọng', 'ngạc nhiên', 'bực tức', 'tủi thân', 'oà khóc'],
       paragraphs: ['Đang đi chơi trong núi, gấu con chợt nhìn thấy một hạt dẻ. Gấu con vui mừng reo lên: "A!". Ngay lập tức, có tiếng "A!" vọng lại. Gấu con ngạc nhiên kêu to: "Bạn là ai?". Lại có tiếng vọng ra từ vách núi: "Bạn là ai?". Gấu con hét lên: "Sao không nói cho tôi biết?". Núi cũng đáp lại như vậy. Gấu con bực tức: "Tôi ghét bạn". Khắp nơi có tiếng vọng: "Tôi ghét bạn". Gấu con tủi thân, oà khóc.', 'Về nhà, gấu con kể cho mẹ nghe. Gấu mẹ cười bảo: "Con hãy quay lại và nói với núi: "Tôi yêu bạn". Gấu con làm theo lời mẹ. Quả nhiên, có tiếng vọng lại: "Tôi yêu bạn". Gấu con bật cười vui vẻ.'],
       exercises: [createSelectionEx('T2-5-5', 'Gấu mẹ nói gì với gấu con?', ['Con hãy quay lại và nói với núi: "Tôi yêu bạn"', 'Con đừng chơi ở núi nữa', 'Núi là người bạn tốt'], 'Con hãy quay lại và nói với núi: "Tôi yêu bạn"')]
     }
@@ -421,6 +446,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['sải cánh', 'mênh mông', 'dập dềnh', 'trú ẩn'],
       paragraphs: ['Hải âu là loài chim của biển cả. Chúng có sải cánh lớn, nên có thể bay rất xa, vượt qua cả những đại dương mênh mông. Hải âu còn bơi rất giỏi nhờ chân của chúng có màng như chân vịt.', 'Hải âu bay suốt ngày trên mặt biển. Đôi khi, chúng đậu ngay trên mặt nước dập dềnh. Khi trời sắp có bão, chúng bay thành đàn tìm nơi trú ẩn. Vì vậy, hải âu được gọi là loài chim báo bão. Chúng cũng được coi là bạn của những người đi biển.'],
       exercises: [createSelectionEx('T2-6-1', 'Vì sao hải âu được gọi là loài chim báo bão?', ['Vì khi trời sắp có bão, chúng bay thành đàn tìm nơi trú ẩn', 'Vì chúng bay rất nhanh', 'Vì chúng kêu rất to'], 'Vì khi trời sắp có bão, chúng bay thành đàn tìm nơi trú ẩn')]
     }
