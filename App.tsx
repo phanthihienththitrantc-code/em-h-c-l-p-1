@@ -53,11 +53,16 @@ const App: React.FC = () => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setIsLoading(false);
-      // We don't force login view here anymore, because students/parents don't need to be logged in via Google
-      // We just update the currentUser state.
+      // Nếu đã có user đăng nhập (giáo viên), tự động chuyển về Home để khỏi phải đăng lại sau khi reload
+      if (user) {
+        setUserRole('teacher');
+        if (currentView === AppView.LOGIN) {
+          setCurrentView(AppView.HOME);
+        }
+      }
     });
     return () => unsubscribeAuth();
-  }, []);
+  }, [currentView]);
 
   useEffect(() => {
     // We always load data now, regardless of currentUser, because students/parents need data too.
@@ -260,7 +265,12 @@ const App: React.FC = () => {
     await api.saveProgress(updatedRecord);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logOut();
+    } catch (err) {
+      console.error('Logout failed', err);
+    }
     setUserRole(null);
     setActiveStudent(null);
     setCurrentView(AppView.LOGIN);

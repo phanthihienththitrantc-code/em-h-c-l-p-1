@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Student, Classroom } from '../types';
 import { UserCheck, Users, GraduationCap, ChevronRight, Sparkles, Heart, UserCircle, LogIn, KeyRound } from 'lucide-react';
-import { auth, signInWithGoogle } from '../firebase';
+import { auth, signInWithGoogle, registerWithEmail, signInWithEmail } from '../firebase';
 
 interface LoginViewProps {
   students: Student[];
@@ -13,30 +13,47 @@ interface LoginViewProps {
 }
 
 const LoginView: React.FC<LoginViewProps> = ({ students, classrooms, onSelectStudent, onSelectTeacher, onSelectParent }) => {
-  const [view, setView] = useState<'selection' | 'student-list' | 'parent-list' | 'enter-code'>('selection');
+  const [view, setView] = useState<'selection' | 'student-list' | 'parent-list' | 'enter-code' | 'teacher-auth'>('selection');
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
   const [classCodeInput, setClassCodeInput] = useState('');
   const [codeError, setCodeError] = useState('');
+
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authError, setAuthError] = useState('');
 
   const filteredStudents = selectedClassId 
     ? students.filter(s => s.classId === selectedClassId)
     : students;
 
-  const handleTeacherLogin = async () => {
-    // For now, allow teachers to access without Google auth to simplify
-    onSelectTeacher();
-    /*
-    if (auth.currentUser) {
-      onSelectTeacher();
-    } else {
-      try {
-        await signInWithGoogle();
-        onSelectTeacher();
-      } catch (error) {
-        console.error("Login failed", error);
+  const handleTeacherLogin = () => {
+    setAuthError('');
+    setAuthEmail('');
+    setAuthPassword('');
+    setAuthMode('login');
+    setView('teacher-auth');
+  };
+
+  const handleTeacherAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError('');
+
+    try {
+      if (authMode === 'register') {
+        await registerWithEmail(authEmail.trim(), authPassword);
+      } else {
+        await signInWithEmail(authEmail.trim(), authPassword);
       }
+      onSelectTeacher();
+    } catch (error: any) {
+      const message = error?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+      setAuthError(message);
     }
-    */
+  };
+
+  const handleTeacherBack = () => {
+    setView('selection');
   };
 
   const handleCodeSubmit = (e: React.FormEvent) => {
@@ -100,18 +117,59 @@ const LoginView: React.FC<LoginViewProps> = ({ students, classrooms, onSelectStu
               description="Ba mẹ nhập mã lớp để theo dõi tiến độ học tập của con." 
               icon={<UserCircle size={48} />}
               color="bg-rose-500"
-              onClick={() => {
-                // We can use the same code entry view, just remember they are a parent
-                // Actually, let's just go to enter-code and let them pick their role later, 
-                // or set a state. For simplicity, we'll just set view to enter-code and 
-                // we might need a way to know if they are parent or student.
-                // Let's add a small hack: if they click parent, we set view to enter-code but we need to remember.
-                // Let's just use a separate state or just pass it.
-                // For now, let's just use enter-code and assume student, or add a role selection after.
-                // Better: separate views or just use enter-code for both.
-                setView('enter-code');
-              }}
+              onClick={() => setView('enter-code')}
             />
+          </div>
+        ) : view === 'teacher-auth' ? (
+          <div className="max-w-md mx-auto bg-white p-8 rounded-[3rem] shadow-xl border border-blue-50 animate-in slide-in-from-bottom-8 duration-500">
+            <h2 className="text-2xl font-black text-center text-gray-800 mb-6">
+              {authMode === 'login' ? 'Đăng nhập giáo viên' : 'Đăng ký giáo viên'}
+            </h2>
+            <form onSubmit={handleTeacherAuth} className="space-y-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-gray-600">Email</label>
+                <input
+                  type="email"
+                  value={authEmail}
+                  onChange={(e) => setAuthEmail(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none transition"
+                  placeholder="giaovien@school.edu.vn"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-gray-600">Mật khẩu</label>
+                <input
+                  type="password"
+                  value={authPassword}
+                  onChange={(e) => setAuthPassword(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none transition"
+                  placeholder="Ít nhất 6 ký tự"
+                />
+              </div>
+              {authError && <div className="text-red-500 text-sm font-bold text-center">{authError}</div>}
+              <button
+                type="submit"
+                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black text-lg shadow-lg hover:shadow-xl transition-all active:scale-95"
+              >
+                {authMode === 'login' ? 'Đăng nhập' : 'Đăng ký'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
+                className="w-full py-3 text-blue-600 font-bold hover:text-blue-700 transition-colors"
+              >
+                {authMode === 'login' ? 'Chưa có tài khoản? Đăng ký' : 'Đã có tài khoản? Đăng nhập'}
+              </button>
+              <button
+                type="button"
+                onClick={handleTeacherBack}
+                className="w-full py-3 text-gray-500 font-bold hover:text-gray-700 transition-colors"
+              >
+                Quay lại
+              </button>
+            </form>
           </div>
         ) : view === 'enter-code' ? (
           <div className="max-w-md mx-auto bg-white p-8 rounded-[3rem] shadow-xl border border-orange-50 animate-in slide-in-from-bottom-8 duration-500">

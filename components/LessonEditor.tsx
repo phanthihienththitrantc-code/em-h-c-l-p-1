@@ -124,6 +124,13 @@ const LessonEditor: React.FC<LessonEditorProps> = ({ lesson, onSave, onCancel, o
     });
   };
 
+  const copyFromSgk = (field: 'sounds' | 'words' | 'sentences' | 'paragraphs') => {
+    if (!originalSgkLesson) return;
+    const value = (originalSgkLesson.content as any)[field] as string[] | undefined;
+    if (!value) return;
+    handleUpdateContent(field, value);
+  };
+
   const handlePasteText = async (field: string) => {
     try {
       const text = await navigator.clipboard.readText();
