@@ -260,11 +260,13 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
                        {selectedExercise.videoUrl ? (
                          <>
                            <iframe 
-                             src={`${selectedExercise.videoUrl}`}
+                             src={`${selectedExercise.videoUrl}?autoplay=0&rel=0`}
                              className="w-full h-full" 
                              title="Video mẫu viết"
-                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                             frameBorder="0"
+                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                              allowFullScreen
+                             loading="lazy"
                            ></iframe>
                            <div className="absolute bottom-3 right-3 flex gap-2 z-20">
                              <a 
@@ -302,8 +304,8 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
                     </div>
                   ) : (
                     <div className="w-full h-full bg-white writing-grid border-4 border-slate-100 rounded-3xl flex items-center justify-center relative shadow-inner overflow-hidden">
-                      <span className={`text-[140px] font-handwriting text-slate-800 opacity-90 select-none animate-in fade-in duration-500 lowercase ${showDots ? 'tracking-[0.2em] [text-shadow:2px_2px_0_#fff,-2px_-2px_0_#fff,2px_-2px_0_#fff,-2px_2px_0_#fff]' : ''}`} style={showDots ? { WebkitTextStroke: '1px #cbd5e1', color: 'transparent' } : {}}>
-                        {selectedExercise.text}
+                      <span className="text-[140px] font-bold text-slate-800 opacity-90 select-none animate-in fade-in duration-500" style={{ fontFamily: 'Arial, sans-serif', textTransform: 'lowercase' }}>
+                        {selectedExercise.text.toLowerCase()}
                       </span>
                       <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/5 transition-colors pointer-events-none"></div>
                     </div>
