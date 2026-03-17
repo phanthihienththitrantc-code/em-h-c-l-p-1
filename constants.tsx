@@ -458,6 +458,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['tươi thắm', 'mừng vui', 'bừng tỉnh'],
       paragraphs: ['Vừa mưa lại nắng', 'Hay có cầu vồng', 'Bảy màu tươi thắm', 'Bé mừng vui trông', 'Màu đỏ mặt trời', 'Màu cam đu đủ', 'Màu vàng cá bơi', 'Lục kia màu lá', 'Màu lam đám mây', 'Màu chàm áo mẹ', 'Màu tím hoa sim', 'Bảy màu yêu thế.', 'Cầu vồng ẩn hiện', 'Rồi lại tan mau', 'Đất trời bừng tỉnh', 'Sau cơn mưa rào.'],
       exercises: [createSelectionEx('T2-6-2', 'Cầu vồng thường xuất hiện khi nào?', ['Vừa mưa lại nắng', 'Trời đang mưa to', 'Trời nắng gắt'], 'Vừa mưa lại nắng')]
     }
@@ -469,6 +470,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['sắc nhọn', 'chắc khoẻ', 'chúa tể'],
       paragraphs: ['Hổ là loài thú ăn thịt, sống trong rừng. Lông hổ thường có màu vàng, pha những vằn đen. Răng sắc nhọn, mắt nhìn rõ mọi vật trong đêm tối. Bốn chân chắc khoẻ và có vuốt sắc. Đuôi dài và cứng như roi sắt. Hổ di chuyển nhanh, có thể nhảy xa và săn mồi rất giỏi. Hổ rất khoẻ và hung dữ.', 'Hầu hết các con vật sống trong rừng đều sợ hổ. Vì vậy, hổ được xem là chúa tể rừng xanh.'],
       exercises: [createSelectionEx('T2-6-3', 'Hổ ăn gì và sống ở đâu?', ['Ăn thịt, sống trong rừng', 'Ăn cỏ, sống trên đồng cỏ', 'Ăn cá, sống dưới nước'], 'Ăn thịt, sống trong rừng')]
     }
@@ -480,6 +482,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['niêm yết', 'nhoẻn miệng', 'choáng ngợp', 'trầm trồ'],
       paragraphs: ['Mừng xuân, các con vật trong rừng tổ chức một cuộc thi tài năng. Đúng như chương trình đã niêm yết, cuộc thi mở đầu bằng tiết mục của chim yểng. Yểng nhoẻn miệng cười rồi bắt chước tiếng của một số loài vật. Tiếp theo là ca khúc "ngoao ngoao" của mèo rừng. Gõ kiến chỉ trong nháy mắt đã khoét được cái tổ xinh xắn. Chim công khiến khán giả say mê, choáng ngợp vì điệu múa tuyệt đẹp. Voọc xám với tiết mục đu cây điêu luyện làm tất cả trầm trồ thích thú.', 'Các con vật đều xứng đáng nhận phần thưởng.'],
       exercises: [createSelectionEx('T2-6-4', 'Cuộc thi có những con vật nào tham gia?', ['Chim yểng, mèo rừng, gõ kiến, chim công, voọc xám', 'Hổ, báo, sư tử', 'Khỉ, hươu, nai'], 'Chim yểng, mèo rừng, gõ kiến, chim công, voọc xám')]
     }
@@ -491,6 +494,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['lắc lư', 'dẻo dai', 'mềm mại'],
       paragraphs: ['Trời nổi gió to. Cây liễu không ngừng lắc lư. Thấy vậy, Nam rất lo cây liễu sẽ bị gãy. Nam hỏi mẹ:', '– Mẹ ơi, cây liễu mềm yếu thế, liệu có bị gió làm gãy không ạ?', 'Mẹ mỉm cười đáp:', '– Con yên tâm, cây liễu sẽ không sao đâu!', 'Mẹ giải thích thêm:', '– Thân cây liễu tuy không to nhưng dẻo dai. Cành liễu mềm mại, có thể chuyển động theo chiều gió. Vì vậy, cây không dễ bị gãy. Liễu còn là loài cây dễ trồng. Chỉ cần cắm cành xuống đất, nó có thể nhanh chóng mọc lên cây non.'],
       exercises: [createSelectionEx('T2-6-5', 'Thân cây liễu có đặc điểm gì?', ['Không to nhưng dẻo dai', 'Rất to và cứng', 'Nhỏ và dễ gãy'], 'Không to nhưng dẻo dai')]
     }
@@ -502,6 +506,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['buồn cười', 'lặng im', 'ngẫm nghĩ'],
       paragraphs: ['Buổi sáng thức dậy', 'Bé thấy buồn cười:', 'Có ai đang nhảy', 'Một bài vui vui.', 'Đó là tia nắng', 'Nhảy trong lòng tay', 'Nhảy trên bàn học', 'Nhảy trên tán cây.', 'Tối đến giờ ngủ', 'Sực nhớ bé tìm', 'Tìm tia nắng nhỏ:', 'Ngủ rồi. Lặng im...', 'Bé nằm ngẫm nghĩ:', '– Nắng ngủ ở đâu?', '– Nắng ngủ nhà nắng!', 'Mai gặp lại nhau.'],
       exercises: [createSelectionEx('T2-7-1', 'Buổi sáng thức dậy, bé thấy tia nắng ở đâu?', ['Trong lòng tay, trên bàn học, trên tán cây', 'Trên giường ngủ', 'Ngoài sân'], 'Trong lòng tay, trên bàn học, trên tán cây')]
     }
@@ -513,6 +518,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['thảo nguyên', 'ban mai'],
       paragraphs: ['Trong giấc mơ buổi sáng', 'Em gặp ông mặt trời', 'Mang túi đầy hoa nắng', 'Rải hoa vàng khắp nơi', 'Trong giấc mơ buổi sáng', 'Em qua thảo nguyên xanh', 'Có rất nhiều hoa lạ', 'Mang tên bạn lớp mình', 'Trong giấc mơ buổi sáng', 'Em thấy một dòng sông', 'Chảy tràn dòng sữa trắng', 'Đi qua ban mai hồng', 'Trong giấc mơ buổi sáng', 'Em nghe rõ bên tai', 'Lời của chú gà trống:', '– Dậy mau đi! Học bài!...'],
       exercises: [createSelectionEx('T2-7-2', 'Trong giấc mơ, bạn nhỏ thấy ông mặt trời làm gì?', ['Mang túi đầy hoa nắng rải khắp nơi', 'Đang đi ngủ', 'Đang mọc lên từ biển'], 'Mang túi đầy hoa nắng rải khắp nơi')]
     }
@@ -524,6 +530,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['tinh mơ', 'đỏ rực', 'lục tục'],
       paragraphs: ['Buổi sáng tinh mơ, mặt trời nhô lên đỏ rực. Những tia nắng toả khắp nơi, đánh thức mọi vật.', 'Nắng chiếu vào tổ chim. Chim bay ra khỏi tổ, cất tiếng hót. Nắng chiếu vào tổ ong. Ong bay ra khỏi tổ, đi kiếm mật. Nắng chiếu vào chuồng gà. Đàn gà lục tục ra khỏi chuồng, đi kiếm mồi. Nắng chiếu vào nhà, gọi bé đang nằm ngủ. Bé thức dậy, chuẩn bị đến trường.', 'Một ngày mới bắt đầu.'],
       exercises: [createSelectionEx('T2-7-3', 'Buổi sáng, cái gì đánh thức mọi vật?', ['Những tia nắng', 'Tiếng gà gáy', 'Tiếng chim hót'], 'Những tia nắng')]
     }
@@ -535,6 +542,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['nhuộm', 'trăng rằm', 'chăn trâu'],
       paragraphs: ['Ai quạt thành gió', 'Thổi mây ngang trời?', 'Ai nhuộm mẹ ơi', 'Bầu trời xanh thế?', 'Ông sao thì bé', 'Trăng rằm tròn to.', 'Cuội ngồi gốc đa', 'Phải chăn trâu mãi.', 'Mẹ ơi có phải', 'Cuội buồn lắm không?', 'Nên chú phi công', 'Bay lên thăm Cuội?'],
       exercises: [createSelectionEx('T2-7-4', 'Bạn nhỏ hỏi mẹ những gì?', ['Ai quạt thành gió, ai nhuộm bầu trời xanh, Cuội có buồn không', 'Ai làm ra mưa, ai làm ra nắng', 'Ai trồng cây, ai nuôi chim'], 'Ai quạt thành gió, ai nhuộm bầu trời xanh, Cuội có buồn không')]
     }
@@ -546,6 +554,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['duyên dáng', 'luỹ tre', 'cao vút', 'mịt mù', 'ồn ào'],
       paragraphs: ['Ông kể ngày xưa, quê của bé có rất nhiều cò. Mùa xuân, từng đàn cò trắng duyên dáng bay tới. Chúng lượn trên bầu trời trong xanh rồi hạ cánh xuống những luỹ tre. Hằng ngày, cò đi mò tôm, bắt cá ở các ao, hồ, đầm.', 'Bây giờ, ao, hồ, đầm phải nhường chỗ cho những toà nhà cao vút, những con đường cao tốc và nhà máy toả khói mịt mù. Cò chẳng còn nơi kiếm ăn. Cò sợ những âm thanh ồn ào. Thế là chúng bay đi.', 'Bé ước ao được thấy những cánh cò trên cánh đồng quê.'],
       exercises: [createSelectionEx('T2-7-5', 'Hằng ngày, cò đi mò tôm, bắt cá ở đâu?', ['Ở các ao, hồ, đầm', 'Ở ngoài biển', 'Ở trên núi'], 'Ở các ao, hồ, đầm')]
     }
@@ -557,6 +566,7 @@ export const LESSONS: Lesson[] = [
     volume: 2,
     type: 'story',
     content: {
+      words: ['lim dim', 'êm ả', 'chập chờn', 'rạo rực'],
       paragraphs: ['Buổi trưa lim dim', 'Nghìn con mắt lá', 'Bóng cũng nằm im', 'Trong vườn êm ả.', 'Bò ơi, bò nghỉ', 'Sau buổi cày mai', 'Có gì ngẫm nghĩ', 'Nhai mãi, nhai hoài...', 'Hoa đại thơm hơn', 'Giữa giờ trưa vắng', 'Con bướm chập chờn', 'Vờn đôi cánh nắng.', 'Bé chưa ngủ được', 'Bé nằm bé nghe', 'Âm thầm rạo rực', 'Cả buổi trưa hè.'],
       exercises: [createSelectionEx('T2-7-6', 'Những con vật nào được nói tới trong bài thơ?', ['Bò, bướm', 'Trâu, chim', 'Gà, lợn'], 'Bò, bướm')]
     }
