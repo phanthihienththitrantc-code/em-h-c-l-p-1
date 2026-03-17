@@ -302,6 +302,16 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
             });
           } catch (err) {
             console.error(err);
+            setGradeResult({ score: 5, comment: "Cô không nghe rõ lắm, bé thử đọc lại nhé!" });
+            onSaveProgress({
+              lessonId: selectedLesson!.id,
+              lessonTitle: selectedLesson!.title,
+              activityType: 'reading',
+              score: 5,
+              comment: "Không thể chấm điểm tự động, cần kiểm tra thủ công",
+              audioUrl: url,
+              audioBase64: base64Audio
+            });
           } finally {
             setIsGrading(false);
           }

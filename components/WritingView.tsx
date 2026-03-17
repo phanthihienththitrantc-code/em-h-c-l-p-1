@@ -4,7 +4,7 @@ import { ProgressRecord, WritingCategory, WritingExercise } from '../types';
 import { WRITING_EXERCISES } from '../constants';
 import { ChevronLeft, Eraser, PenTool, Star, X, Eye, Info, Volume2, Sparkles, Film, PlayCircle, AlertCircle, VideoOff, Play, Edit2, Save } from 'lucide-react';
 import { GeminiService } from '../services/geminiService';
-import { GoogleGenAI, Modality } from '@google/genai';
+import { AudioService } from '../services/audioService';
 
 interface WritingViewProps {
   onBack: () => void;
@@ -35,6 +35,7 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
   const exercisesToUse = writingExercises.length > 0 ? writingExercises : WRITING_EXERCISES;
   const filteredExercises = exercisesToUse.filter(ex => ex.category === activeCategory);
   const gemini = GeminiService.getInstance();
+  const audioService = AudioService.getInstance();
 
   useEffect(() => {
     if (writingExercises.length > 0) {
@@ -126,6 +127,14 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
       });
     } catch (err) {
       console.error(err);
+      setGradeResult({ score: 5, comment: "Cô không xem rõ chữ bé viết, bé thử viết lại nhé!" });
+      onSaveProgress({
+        lessonId: `writing-${selectedExercise.id}`,
+        lessonTitle: `Tập viết: ${selectedExercise.label}`,
+        activityType: 'writing',
+        score: 5,
+        comment: "Không thể chấm điểm tự động, cần kiểm tra thủ công"
+      });
     } finally {
       setIsGrading(false);
     }
@@ -133,32 +142,13 @@ const WritingView: React.FC<WritingViewProps> = ({ onBack, onSaveProgress, writi
 
   const handleSpeak = async () => {
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash-preview-tts",
-        contents: `Đây là chữ: ${selectedExercise.text}`,
-        config: {
-          responseModalities: [Modality.AUDIO],
-          speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } } },
-        },
-      });
-      const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+      const base64Audio = await gemini.textToSpeech(`Đây là chữ: ${selectedExercise.text}`);
       if (base64Audio) {
-        const ctx = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 24000});
-        const binaryString = atob(base64Audio);
-        const len = binaryString.length;
-        const bytes = new Uint8Array(len);
-        for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
-        const dataInt16 = new Int16Array(bytes.buffer);
-        const buffer = ctx.createBuffer(1, dataInt16.length, 24000);
-        const channelData = buffer.getChannelData(0);
-        for (let i = 0; i < dataInt16.length; i++) channelData[i] = dataInt16[i] / 32768.0;
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(ctx.destination);
-        source.start();
+        await audioService.playFromBase64(base64Audio);
       }
-    } catch (e) {}
+    } catch (err) {
+      console.error("TTS Error:", err);
+    }
   };
 
   const renderStars = (score: number) => {
