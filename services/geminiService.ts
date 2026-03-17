@@ -98,7 +98,7 @@ export class GeminiService {
       model: 'gemini-3-flash-preview',
       contents: {
         parts: [
-          { inlineData: { data: audioBase64, mimeType: 'audio/webm' } },
+          { inlineData: { data: audioBase64, mimeType: 'audio/wav' } },
           { text: `Đây là âm thanh học sinh lớp 1 Việt Nam đọc bài: "${expectedText}". 
           Hãy nghe và chấm điểm từ 0-10. Nhận xét thật thân thiện kiểu cô giáo tiểu học.
           Định dạng trả về:
@@ -125,7 +125,7 @@ export class GeminiService {
       model: 'gemini-3-flash-preview',
       contents: {
         parts: [
-          { inlineData: { data: audioBase64, mimeType: 'audio/webm' } },
+          { inlineData: { data: audioBase64, mimeType: 'audio/wav' } },
           { text: `Câu hỏi: "${question}". Yêu cầu nhắc đến: "${concept}". 
           Nghe audio và chấm điểm 0-10.
           Định dạng:

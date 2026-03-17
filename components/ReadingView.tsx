@@ -83,12 +83,64 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
     };
   }, []);
 
-  const decode = (base64: string) => {
-    const binaryString = atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
-    return bytes;
+  const convertToWav = async (audioBlob: Blob): Promise<string> => {
+    const arrayBuffer = await audioBlob.arrayBuffer();
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    
+    // Convert to WAV
+    const length = audioBuffer.length;
+    const numberOfChannels = audioBuffer.numberOfChannels;
+    const sampleRate = audioBuffer.sampleRate;
+    const bytesPerSample = 2; // 16-bit
+    const blockAlign = numberOfChannels * bytesPerSample;
+    const byteRate = sampleRate * blockAlign;
+    const dataSize = length * blockAlign;
+    const bufferSize = 44 + dataSize;
+    
+    const buffer = new ArrayBuffer(bufferSize);
+    const view = new DataView(buffer);
+    
+    // WAV header
+    const writeString = (offset: number, string: string) => {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    };
+    
+    writeString(0, 'RIFF');
+    view.setUint32(4, bufferSize - 8, true);
+    writeString(8, 'WAVE');
+    writeString(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true); // PCM
+    view.setUint16(22, numberOfChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, byteRate, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, 16, true); // bits per sample
+    writeString(36, 'data');
+    view.setUint32(40, dataSize, true);
+    
+    // Convert float to 16-bit PCM
+    let offset = 44;
+    for (let i = 0; i < length; i++) {
+      for (let channel = 0; channel < numberOfChannels; channel++) {
+        const sample = Math.max(-1, Math.min(1, audioBuffer.getChannelData(channel)[i]));
+        view.setInt16(offset, sample * 0x7FFF, true);
+        offset += 2;
+      }
+    }
+    
+    const wavBlob = new Blob([buffer], { type: 'audio/wav' });
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64 = (reader.result as string).split(',')[1];
+        resolve(base64);
+      };
+      reader.readAsDataURL(wavBlob);
+    });
   };
 
   const decodeAudioData = async (data: Uint8Array, ctx: AudioContext, sampleRate: number, numChannels: number): Promise<AudioBuffer> => {
@@ -281,7 +333,14 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
         const reader = new FileReader();
         reader.readAsDataURL(audioBlob);
         reader.onloadend = async () => {
-          const base64Audio = (reader.result as string).split(',')[1];
+          // Convert to WAV for better Gemini compatibility
+          let base64Audio;
+          try {
+            base64Audio = await convertToWav(audioBlob);
+          } catch (convertError) {
+            console.warn('WAV conversion failed, using original:', convertError);
+            base64Audio = (reader.result as string).split(',')[1];
+          }
           setIsGrading(true);
           try {
             let result;
@@ -301,7 +360,10 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
               audioBase64: base64Audio // Lưu trữ bền vững
             });
           } catch (err) {
-            console.error(err);
+            console.error('Lỗi chấm điểm:', err);
+            console.error('Audio blob size:', audioBlob.size);
+            console.error('Base64 length:', base64Audio.length);
+            console.error('Expected text:', fullText);
             setGradeResult({ score: 5, comment: "Cô không nghe rõ lắm, bé thử đọc lại nhé!" });
             onSaveProgress({
               lessonId: selectedLesson!.id,
@@ -790,6 +852,18 @@ const ReadingView: React.FC<ReadingViewProps> = ({ lessons, initialLessonId, onB
                  <div className="text-7xl font-black text-orange-600">{gradeResult.score}<span className="text-3xl text-orange-300">/10</span></div>
               </div>
               <p className="text-blue-900 font-medium italic text-lg leading-relaxed">"{gradeResult.comment}"</p>
+              {recordedAudioUrl && (
+                <button 
+                  onClick={() => {
+                    const audio = new Audio(recordedAudioUrl);
+                    audio.play();
+                  }}
+                  className="flex items-center justify-center gap-2 w-full py-3 bg-green-600 text-white rounded-2xl font-bold hover:bg-green-700 transition-colors"
+                >
+                  <Volume2 size={20} />
+                  Nghe lại bài đọc của bé
+                </button>
+              )}
               <button onClick={() => { setGradeResult(null); setRecordedAudioUrl(null); }} className="w-full py-4 bg-blue-600 text-white rounded-2xl font-black">Học tiếp nào!</button>
             </div>
           </div>
