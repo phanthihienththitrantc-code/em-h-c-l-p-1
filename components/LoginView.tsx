@@ -47,7 +47,21 @@ const LoginView: React.FC<LoginViewProps> = ({ students, classrooms, onSelectStu
       }
       onSelectTeacher();
     } catch (error: any) {
-      const message = error?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+      const code = error?.code || '';
+      let message = 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+
+      if (code === 'auth/email-already-in-use') {
+        message = 'Email này đã được đăng ký. Vui lòng đăng nhập hoặc dùng email khác.';
+        setAuthMode('login');
+      } else if (code === 'auth/wrong-password') {
+        message = 'Mật khẩu không đúng. Vui lòng thử lại.';
+      } else if (code === 'auth/user-not-found') {
+        message = 'Không tìm thấy tài khoản. Vui lòng đăng ký trước.';
+        setAuthMode('register');
+      } else if (error?.message) {
+        message = error.message;
+      }
+
       setAuthError(message);
     }
   };
