@@ -26,7 +26,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
   onSaveAssignments, onUpdateProgress,
   onDeleteAssignment, onDeleteClassroom, onDeleteStudent
 }) => {
-  const [activeTab, setActiveTab] = useState<'progress' | 'assignments'>('progress');
+  const [activeTab, setActiveTab] = useState<'progress' | 'assignments' | 'statistics' | 'recordings'>('progress');
   const [showAddStudent, setShowAddStudent] = useState(false);
   const [showAddClass, setShowAddClass] = useState(false);
   const [showDeleteClassConfirm, setShowDeleteClassConfirm] = useState<string | null>(null);
@@ -221,10 +221,22 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           >
             <ClipboardList size={18} /> Giao bài tập
           </button>
+          <button 
+            onClick={() => setActiveTab('statistics')} 
+            className={`px-8 py-3 rounded-[1.5rem] font-black text-sm transition-all flex items-center gap-2 ${activeTab === 'statistics' ? 'bg-indigo-600 text-white shadow-md' : 'text-gray-400 hover:text-indigo-600'}`}
+          >
+            <TrendingUp size={18} /> Thống kê
+          </button>
+          <button 
+            onClick={() => setActiveTab('recordings')} 
+            className={`px-8 py-3 rounded-[1.5rem] font-black text-sm transition-all flex items-center gap-2 ${activeTab === 'recordings' ? 'bg-indigo-600 text-white shadow-md' : 'text-gray-400 hover:text-indigo-600'}`}
+          >
+            <Headphones size={18} /> Ghi âm
+          </button>
         </div>
       </div>
 
-      {activeTab === 'progress' ? (
+      {activeTab === 'progress' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* CỘT QUẢN LÝ LỚP HỌC */}
           <div className="lg:col-span-4 space-y-6">
@@ -441,7 +453,9 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
            )}
         </div>
       </div>
-      ) : (
+      )}
+
+      {activeTab === 'assignments' && (
         <div className="space-y-8">
           <div className="flex justify-between items-center">
             <h3 className="text-2xl font-black text-indigo-900 flex items-center gap-3">
@@ -514,6 +528,215 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               })}
             </div>
           )}
+        </div>
+      )}
+
+      {/* TAB THỐNG KÊ ĐIỂM SỐ */}
+      {activeTab === 'statistics' && classrooms.length > 0 && (
+        <div className="space-y-8">
+          <h3 className="text-3xl font-black text-indigo-900 flex items-center gap-3">
+            <TrendingUp size={32} className="text-indigo-600" />
+            Thống kê điểm số
+          </h3>
+
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-indigo-50">
+            <div className="mb-6">
+              <label className="block text-sm font-bold text-gray-600 mb-2">Chọn lớp học:</label>
+              <select 
+                value={selectedClassId} 
+                onChange={(e) => setSelectedClassId(e.target.value)}
+                className="w-full p-4 rounded-2xl bg-gray-50 border-2 border-gray-200 focus:border-indigo-500 outline-none font-bold"
+              >
+                {classrooms.map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {(() => {
+              const classProgress = progress.filter(p => {
+                const student = students.find(s => s.id === p.studentId);
+                return student && student.classId === selectedClassId;
+              });
+
+              if (classProgress.length === 0) {
+                return (
+                  <div className="py-16 text-center text-gray-300 italic border-4 border-dashed border-gray-50 rounded-[2rem] flex flex-col items-center gap-4">
+                    <TrendingUp size={48} className="opacity-20" />
+                    <p>Chưa có dữ liệu điểm số. Học sinh cần hoàn thành bài luyện tập trước.</p>
+                  </div>
+                );
+              }
+
+              const scores = classProgress.map(p => p.teacherScore || p.score);
+              const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+              const maxScore = Math.max(...scores);
+              const minScore = Math.min(...scores);
+
+              return (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-[2rem] border border-indigo-200">
+                      <p className="text-sm font-bold text-indigo-600 uppercase mb-2">Điểm TB</p>
+                      <p className="text-4xl font-black text-indigo-900">{avgScore}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-[2rem] border border-green-200">
+                      <p className="text-sm font-bold text-green-600 uppercase mb-2">Cao nhất</p>
+                      <p className="text-4xl font-black text-green-900">{maxScore}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-[2rem] border border-orange-200">
+                      <p className="text-sm font-bold text-orange-600 uppercase mb-2">Thấp nhất</p>
+                      <p className="text-4xl font-black text-orange-900">{minScore}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-[2rem] border border-purple-200">
+                      <p className="text-sm font-bold text-purple-600 uppercase mb-2">Tổng bài</p>
+                      <p className="text-4xl font-black text-purple-900">{classProgress.length}</p>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b-2 border-indigo-200">
+                          <th className="text-left py-4 px-4 font-black text-indigo-900">Học sinh</th>
+                          <th className="text-center py-4 px-4 font-black text-indigo-900">Số bài</th>
+                          <th className="text-center py-4 px-4 font-black text-indigo-900">Điểm TB</th>
+                          <th className="text-center py-4 px-4 font-black text-indigo-900">Cao nhất</th>
+                          <th className="text-center py-4 px-4 font-black text-indigo-900">Thấp nhất</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {students.filter(s => s.classId === selectedClassId).map(student => {
+                          const studentProgress = progress.filter(p => p.studentId === student.id);
+                          const studentScores = studentProgress.map(p => p.teacherScore || p.score);
+                          const avg = studentProgress.length > 0 ? (studentScores.reduce((a, b) => a + b, 0) / studentScores.length).toFixed(1) : '-';
+                          const max = studentProgress.length > 0 ? Math.max(...studentScores) : '-';
+                          const min = studentProgress.length > 0 ? Math.min(...studentScores) : '-';
+
+                          return (
+                            <tr key={student.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                              <td className="py-4 px-4 flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-black" style={{ backgroundColor: student.avatarColor }}>
+                                  {student.name.charAt(0)}
+                                </div>
+                                <span className="font-bold text-gray-800">{student.name}</span>
+                              </td>
+                              <td className="text-center py-4 px-4 font-bold text-gray-600">{studentProgress.length}</td>
+                              <td className="text-center py-4 px-4 font-black text-indigo-600">{avg}</td>
+                              <td className="text-center py-4 px-4 font-black text-green-600">{max}</td>
+                              <td className="text-center py-4 px-4 font-black text-orange-600">{min}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        </div>
+      )}
+
+      {/* TAB DANH SÁCH GHI ÂM */}
+      {activeTab === 'recordings' && classrooms.length > 0 && (
+        <div className="space-y-8">
+          <h3 className="text-3xl font-black text-indigo-900 flex items-center gap-3">
+            <Headphones size={32} className="text-indigo-600" />
+            Danh sách ghi âm học sinh đọc bài
+          </h3>
+
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-indigo-50">
+            <div className="mb-6">
+              <label className="block text-sm font-bold text-gray-600 mb-2">Chọn lớp học:</label>
+              <select 
+                value={selectedClassId} 
+                onChange={(e) => setSelectedClassId(e.target.value)}
+                className="w-full p-4 rounded-2xl bg-gray-50 border-2 border-gray-200 focus:border-indigo-500 outline-none font-bold"
+              >
+                {classrooms.map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {(() => {
+              const audioRecords = progress.filter(p => {
+                const student = students.find(s => s.id === p.studentId);
+                return student && student.classId === selectedClassId && (p.audioBase64 || p.audioUrl);
+              }).sort((a, b) => b.timestamp - a.timestamp);
+
+              if (audioRecords.length === 0) {
+                return (
+                  <div className="py-16 text-center text-gray-300 italic border-4 border-dashed border-gray-50 rounded-[2rem] flex flex-col items-center gap-4">
+                    <Mic size={48} className="opacity-20" />
+                    <p>Chưa có file ghi âm. Học sinh cần hoàn thành bài luyện đọc trước.</p>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="space-y-4">
+                  {audioRecords.map((record) => {
+                    const student = students.find(s => s.id === record.studentId);
+                    return (
+                      <div key={record.id} className="p-6 bg-gray-50 rounded-[2rem] border border-gray-100 hover:border-indigo-200 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex items-start gap-4 flex-1">
+                          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-black shrink-0" style={{ backgroundColor: student?.avatarColor }}>
+                            {student?.name.charAt(0)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-black text-gray-800">{student?.name}</p>
+                            <p className="text-gray-600 font-bold truncate">{record.lessonTitle}</p>
+                            <p className="text-xs font-bold text-gray-500 mt-2">
+                              <Calendar size={12} className="inline mr-1" />
+                              {new Date(record.timestamp).toLocaleDateString('vi-VN')} {new Date(record.timestamp).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'})}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 md:gap-4">
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase shrink-0 ${record.activityType === 'reading' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
+                            {record.activityType === 'reading' ? 'Đọc bài' : 'Viết chữ'}
+                          </span>
+                          
+                          <div className="text-right shrink-0">
+                            <p className="text-lg font-black text-indigo-600">{record.teacherScore || record.score}/10</p>
+                          </div>
+
+                          <button
+                            onClick={() => handlePlayAudio(record)}
+                            className={`px-4 py-3 rounded-xl font-black text-sm transition-all whitespace-nowrap flex items-center gap-2 ${playingAudioId === record.id ? 'bg-indigo-600 text-white animate-pulse' : 'bg-indigo-50 text-indigo-600 border border-indigo-200 hover:bg-indigo-100'}`}
+                          >
+                            {playingAudioId === record.id ? (
+                              <>
+                                <Square size={16} fill="currentColor" /> Phát
+                              </>
+                            ) : (
+                              <>
+                                <Play size={16} fill="currentColor" /> Nghe
+                              </>
+                            )}
+                          </button>
+
+                          {record.audioBase64 && (
+                            <a
+                              href={`data:audio/webm;base64,${record.audioBase64}`}
+                              download={`${student?.name}-${record.lessonTitle}-${new Date(record.timestamp).getTime()}.webm`}
+                              className="p-3 text-blue-600 hover:bg-blue-50 rounded-xl transition-all shrink-0"
+                              title="Tải file ghi âm"
+                            >
+                              <Download size={18} />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
+          </div>
         </div>
       )}
 
