@@ -48,6 +48,12 @@ const App: React.FC = () => {
   const [currentTheme, setCurrentTheme] = useState<AppTheme>(APP_THEMES[0]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+  const [seedNeeded, setSeedNeeded] = useState({
+    lessons: false,
+    students: false,
+    classrooms: false,
+    writing: false,
+  });
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
@@ -73,9 +79,13 @@ const App: React.FC = () => {
     const unsubLessons = api.subscribeLessons((data) => {
       if (data.length === 0) {
         setLessons(INITIAL_LESSONS);
-        INITIAL_LESSONS.forEach(l => api.saveLesson(l));
+        setSeedNeeded(prev => ({ ...prev, lessons: true }));
+        if (auth.currentUser) {
+          INITIAL_LESSONS.forEach(l => api.saveLesson(l));
+        }
       } else {
         setLessons(data);
+        setSeedNeeded(prev => ({ ...prev, lessons: false }));
       }
     });
 
@@ -86,9 +96,13 @@ const App: React.FC = () => {
       if (data.length === 0) {
         const { WRITING_EXERCISES } = await import('./constants');
         setWritingExercises(WRITING_EXERCISES);
-        WRITING_EXERCISES.forEach(e => api.saveWritingExercise(e));
+        setSeedNeeded(prev => ({ ...prev, writing: true }));
+        if (auth.currentUser) {
+          WRITING_EXERCISES.forEach(e => api.saveWritingExercise(e));
+        }
       } else {
         setWritingExercises(data);
+        setSeedNeeded(prev => ({ ...prev, writing: false }));
       }
     });
 
@@ -100,7 +114,10 @@ const App: React.FC = () => {
           { id: 'c3', name: 'Lớp 1A3', grade: '1', classCode: '1A3' }
         ];
         setClassrooms(initialClasses);
-        initialClasses.forEach(c => api.saveClassroom(c));
+        setSeedNeeded(prev => ({ ...prev, classrooms: true }));
+        if (auth.currentUser) {
+          initialClasses.forEach(c => api.saveClassroom(c));
+        }
       } else {
         // Ensure all existing classes have a code
         const processedData = data.map(c => {
@@ -116,15 +133,20 @@ const App: React.FC = () => {
           return c;
         });
         setClassrooms(processedData);
+        setSeedNeeded(prev => ({ ...prev, classrooms: false }));
       }
     });
 
     const unsubStudents = api.subscribeStudents((data) => {
       if (data.length === 0) {
         setStudents(INITIAL_STUDENTS_1A3);
-        INITIAL_STUDENTS_1A3.forEach(s => api.saveStudent(s));
+        setSeedNeeded(prev => ({ ...prev, students: true }));
+        if (auth.currentUser) {
+          INITIAL_STUDENTS_1A3.forEach(s => api.saveStudent(s));
+        }
       } else {
         setStudents(data);
+        setSeedNeeded(prev => ({ ...prev, students: false }));
       }
     });
 
@@ -167,6 +189,40 @@ const App: React.FC = () => {
     document.body.style.backgroundColor = currentTheme.backgroundColor;
     localStorage.setItem('tv1_theme', JSON.stringify(currentTheme));
   }, [currentTheme]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    if (!seedNeeded.lessons && !seedNeeded.students && !seedNeeded.classrooms && !seedNeeded.writing) return;
+
+    const seedFirestoreData = async () => {
+      try {
+        if (seedNeeded.lessons) {
+          await Promise.all(INITIAL_LESSONS.map(async (lesson) => await api.saveLesson(lesson)));
+        }
+        if (seedNeeded.writing) {
+          const { WRITING_EXERCISES } = await import('./constants');
+          await Promise.all(WRITING_EXERCISES.map(async (exercise) => await api.saveWritingExercise(exercise)));
+        }
+        if (seedNeeded.classrooms) {
+          const initialClasses = [
+            { id: 'c1', name: 'Lớp 1A', grade: '1', classCode: '1A' },
+            { id: 'c2', name: 'Lớp 1B', grade: '1', classCode: '1B' },
+            { id: 'c3', name: 'Lớp 1A3', grade: '1', classCode: '1A3' }
+          ];
+          await Promise.all(initialClasses.map(async (classroom) => await api.saveClassroom(classroom)));
+        }
+        if (seedNeeded.students) {
+          await Promise.all(INITIAL_STUDENTS_1A3.map(async (student) => await api.saveStudent(student)));
+        }
+      } catch (error) {
+        console.error('Unable to seed Firestore initial data after teacher login:', error);
+      } finally {
+        setSeedNeeded({ lessons: false, students: false, classrooms: false, writing: false });
+      }
+    };
+
+    seedFirestoreData();
+  }, [currentUser, seedNeeded]);
 
   const handleSaveLesson = async (updatedLesson: Lesson) => {
     const exists = lessons.some(l => l.id === updatedLesson.id);
