@@ -80,9 +80,8 @@ const App: React.FC = () => {
       if (data.length === 0) {
         setLessons(INITIAL_LESSONS);
         setSeedNeeded(prev => ({ ...prev, lessons: true }));
-        if (auth.currentUser) {
-          INITIAL_LESSONS.forEach(l => api.saveLesson(l));
-        }
+        // Seed lessons regardless of auth since rules allow read/write
+        INITIAL_LESSONS.forEach(l => api.saveLesson(l));
       } else {
         setLessons(data);
         setSeedNeeded(prev => ({ ...prev, lessons: false }));
@@ -97,9 +96,8 @@ const App: React.FC = () => {
         const { WRITING_EXERCISES } = await import('./constants');
         setWritingExercises(WRITING_EXERCISES);
         setSeedNeeded(prev => ({ ...prev, writing: true }));
-        if (auth.currentUser) {
-          WRITING_EXERCISES.forEach(e => api.saveWritingExercise(e));
-        }
+        // Seed writing exercises regardless of auth
+        WRITING_EXERCISES.forEach(e => api.saveWritingExercise(e));
       } else {
         setWritingExercises(data);
         setSeedNeeded(prev => ({ ...prev, writing: false }));
@@ -115,9 +113,8 @@ const App: React.FC = () => {
         ];
         setClassrooms(initialClasses);
         setSeedNeeded(prev => ({ ...prev, classrooms: true }));
-        if (auth.currentUser) {
-          initialClasses.forEach(c => api.saveClassroom(c));
-        }
+        // Seed classrooms regardless of auth
+        initialClasses.forEach(c => api.saveClassroom(c));
       } else {
         // Ensure all existing classes have a code
         const processedData = data.map(c => {
@@ -141,9 +138,8 @@ const App: React.FC = () => {
       if (data.length === 0) {
         setStudents(INITIAL_STUDENTS_1A3);
         setSeedNeeded(prev => ({ ...prev, students: true }));
-        if (auth.currentUser) {
-          INITIAL_STUDENTS_1A3.forEach(s => api.saveStudent(s));
-        }
+        // Seed students regardless of auth
+        INITIAL_STUDENTS_1A3.forEach(s => api.saveStudent(s));
       } else {
         setStudents(data);
         setSeedNeeded(prev => ({ ...prev, students: false }));
