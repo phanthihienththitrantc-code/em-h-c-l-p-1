@@ -17,12 +17,24 @@ service cloud.firestore {
       return isAuthenticated() && request.resource.data.teacherId == request.auth.uid;
     }
 
+    function isTeacherOwnerOrAnonymous() {
+      return isTeacherOwner() || request.resource.data.teacherId == 'anonymous';
+    }
+
     function isTeacherOwnerUpdate() {
       return isAuthenticated() && resource.data.teacherId == request.auth.uid && request.resource.data.teacherId == request.auth.uid;
     }
 
+    function isTeacherOwnerUpdateOrAnonymous() {
+      return isTeacherOwnerUpdate() || (resource.data.teacherId == 'anonymous' && request.resource.data.teacherId == 'anonymous');
+    }
+
     function isTeacherOwnerDelete() {
       return isAuthenticated() && resource.data.teacherId == request.auth.uid;
+    }
+
+    function isTeacherOwnerDeleteOrAnonymous() {
+      return isTeacherOwnerDelete() || resource.data.teacherId == 'anonymous';
     }
 
     // ===============================================================
@@ -37,37 +49,37 @@ service cloud.firestore {
 
     match /classrooms/{classroomId} {
       allow read: if true; // Allow students/parents to find their class by code
-      allow create: if isTeacherOwner();
-      allow update: if isTeacherOwnerUpdate();
-      allow delete: if isTeacherOwnerDelete();
+      allow create: if isTeacherOwnerOrAnonymous();
+      allow update: if isTeacherOwnerUpdateOrAnonymous();
+      allow delete: if isTeacherOwnerDeleteOrAnonymous();
     }
 
     match /students/{studentId} {
       allow read: if true; // Allow students/parents to pick their name
-      allow create: if isTeacherOwner();
-      allow update: if isTeacherOwnerUpdate();
-      allow delete: if isTeacherOwnerDelete();
+      allow create: if isTeacherOwnerOrAnonymous();
+      allow update: if isTeacherOwnerUpdateOrAnonymous();
+      allow delete: if isTeacherOwnerDeleteOrAnonymous();
     }
 
     match /assignments/{assignmentId} {
       allow read: if true; // Allow students/parents to see assignments
-      allow create: if isTeacherOwner();
-      allow update: if isTeacherOwnerUpdate();
-      allow delete: if isTeacherOwnerDelete();
+      allow create: if isTeacherOwnerOrAnonymous();
+      allow update: if isTeacherOwnerUpdateOrAnonymous();
+      allow delete: if isTeacherOwnerDeleteOrAnonymous();
     }
 
     match /lessons/{lessonId} {
       allow read: if true; // Allow students/parents to read lessons
-      allow create: if isTeacherOwner();
-      allow update: if isTeacherOwnerUpdate();
-      allow delete: if isTeacherOwnerDelete();
+      allow create: if isTeacherOwnerOrAnonymous();
+      allow update: if isTeacherOwnerUpdateOrAnonymous();
+      allow delete: if isTeacherOwnerDeleteOrAnonymous();
     }
 
     match /writing_exercises/{exerciseId} {
       allow read: if true; // Allow students/parents to read exercises
-      allow create: if isTeacherOwner();
-      allow update: if isTeacherOwnerUpdate();
-      allow delete: if isTeacherOwnerDelete();
+      allow create: if isTeacherOwnerOrAnonymous();
+      allow update: if isTeacherOwnerUpdateOrAnonymous();
+      allow delete: if isTeacherOwnerDeleteOrAnonymous();
     }
 
     match /progress/{progressId} {
